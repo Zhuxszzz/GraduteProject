@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">GRAProject</string>
+    <string name="default_location">请选择地址</string>
 </resources>

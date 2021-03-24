@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.niantch.graproject.R
+import java.util.*
 
 class PreviewActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -13,9 +14,16 @@ class PreviewActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        val intent = Intent()
-        intent.action = Intent.ACTION_MAIN
-        startActivity(intent)
-        finish()
+        val intent = Intent(this, MainActivity::class.java)
+        val timer = Timer()
+        timer.schedule(
+            object : TimerTask() {
+                override fun run() {
+                    startActivity(intent)
+                    finish()
+                    timer.cancel()
+                }
+            }, 800
+        )
     }
 }

@@ -1,7 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.niantch.graproject">
+    <!--腾讯地图 SDK 要求的权限(开始)-->
+    <!--访问网络获取地图服务-->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
+    <!--检查网络可用性-->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- 访问WiFi状态 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!--需要外部存储写权限用于保存地图缓存-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!--获取 device id 辨别设备-->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!--腾讯地图 SDK 要求的权限(结束)-->
     <application
         android:name=".MidnightDinerApplication"
         android:allowBackup="true"
@@ -10,18 +23,21 @@
         android:roundIcon="@mipmap/icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.PreviewActivity">
+        <meta-data
+            android:name="TencentMapSDK"
+            android:value="CABBZ-X6KK2-XF2UT-C4Z4C-XUMGT-ONFYB" />
+
+        <activity
+            android:name=".ui.PreviewActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
-                <action android:name="android.intent.action.Preview" />
+                <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-            </intent-filter>
-        </activity>
+        <activity android:name=".ui.MainActivity" android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity android:name=".ui.AddAddressActivity" android:theme="@style/Theme.AppCompat.NoActionBar"/>
     </application>
 
 </manifest>
