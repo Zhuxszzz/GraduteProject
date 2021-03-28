@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">GRAProject</string>
     <string name="default_location">请选择地址</string>
+    <string name="click_to_sign">请点击登录</string>
+    <string name="gold_money">金币</string>
+    <string name="red_paper">红包</string>
+    <string name="wallet_balance">钱包余额</string>
 </resources>
