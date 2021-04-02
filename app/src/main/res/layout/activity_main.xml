@@ -54,7 +54,7 @@
         android:id="@+id/vp_fragments_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="7"/>
+        android:layout_weight="8"/>
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tl_fragment_bottom"
         android:layout_width="match_parent"
