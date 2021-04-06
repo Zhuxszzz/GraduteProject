@@ -10,13 +10,18 @@ import androidx.fragment.app.FragmentPagerAdapter
  * @datetime:  2021
  * @desc:
  */
-class MyFragmentPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm, BEHAVIOR_SET_USER_VISIBLE_HINT) {
+class TabFragmentAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm, BEHAVIOR_SET_USER_VISIBLE_HINT) {
     var fragments = ArrayList<Fragment>()
+    var titles = ArrayList<String>()
     override fun getItem(position: Int): Fragment {
         return fragments[position]
     }
 
     override fun getCount(): Int {
         return fragments.size
+    }
+
+    override fun getPageTitle(position: Int): CharSequence? {
+        return titles[position]
     }
 }

@@ -4,4 +4,55 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
     <color name="common_bg_black">#0B0E12</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="bottom_tab_text_normal_color">#676767</color>
+    <color name="bottom_tab_text_selected_color">#05c0ab</color>
+    <color name="grey_background">#f0f2f1</color>
+    <color name="grey_divider">#e2e2e2</color>
+    <color name="grey_background_f3">#f3f3f3</color>
+    <color name="grey_background_e">#eeeeee</color>
+
+    <color name="text_color_grey">#989898</color>
+    <color name="text_price_color">#ad5f59</color>
+    <color name="text_select_color">#44cc00</color>
+    <color name="start_golden">#fed100</color>
+    <color name="colorRed">#ff0000</color>
+    <color name="colorOrange">#ff8800</color>
+
+    <color name="res_detail_month_order">#444444</color>
+
+    <color name="transparent">#00000000</color>
+    <color name="goods_category_bg">#F2F2F2</color>
+    <color name="color_666">#666666</color>
+    <color name="color_999">#999999</color>
+    <color name="color_f9">#f9f9f9</color>
+    <color name="color_56">#565656</color>
+    <color name="black_2e">#2e2e2e</color>
+    <color name="account_bg">#58D178</color>
+    <color name="account_selected_bg">#4ab566</color>
+
+    <color name="gradual_start_theme_color">#05cdb7</color>
+    <color name="back_btn_press_color">#06dac3</color>
+    <color name="one_fragment_location">#a9a9a9</color>
+    <color name="text_hint_color">#989898</color>
+    <color name="common_status_bar_color">#5c5c5c</color>
+    <color name="my_fragment_status_bar_color">#017465</color>
+    <color name="indicator_unselected_color">#88737473</color>
+    <color name="indicator_selected_color">#fff</color>
+    <color name="colorLineGray">#F3F1F4</color><!--下划线灰色-->
+    <color name="colorTransGrey">#8f000000</color>
+    <color name="shop_cart_bg">#f8444547</color>
+
+
+    <!-- Dialog标题色 -->
+    <color name="black_30">#333333</color>
+    <!-- Dialog内容色 -->
+    <color name="black_60">#666666</color>
+    <!-- Dialog按钮文字色 -->
+    <color name="black_99">#999999</color>
+    <!-- Dialog取消按钮色 -->
+    <color name="dialog_negative">#E8E6E2</color>
+    <!-- Dialog取消按钮色 -->
+    <color name="dialog_positive">#AC966F</color>
 </resources>

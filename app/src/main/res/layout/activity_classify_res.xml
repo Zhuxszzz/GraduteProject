@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/white">
+
+    <ProgressBar
+            android:visibility="gone"
+            android:layout_centerInParent="true"
+            android:id="@+id/first_load"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    <LinearLayout
+            android:id="@+id/order"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true">
+
+        <LinearLayout
+                android:layout_weight="2.9"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+
+            <TextView
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:drawableRight="@mipmap/down_black"
+                    android:id="@+id/order_multiple_order"
+                    android:textColor="@color/black"
+                    android:padding="20px"
+                    android:gravity="center"
+                    android:text="@string/multiple_order"
+                    android:layout_weight="1.0"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" />
+
+            <TextView
+                    android:id="@+id/order_good_common"
+                    android:textColor="@color/black_60"
+                    android:padding="20px"
+                    android:text="@string/good_common"
+                    android:gravity="center"
+                    android:layout_weight="1.0"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" />
+
+            <TextView
+                    android:id="@+id/order_short_distance"
+                    android:textColor="@color/black_60"
+                    android:padding="20px"
+                    android:text="@string/short_distance"
+                    android:gravity="center"
+                    android:layout_weight="1.0"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <TextView
+                android:drawableRight="@mipmap/filter"
+                android:id="@+id/order_filter"
+                android:textColor="@color/black_60"
+                android:padding="20px"
+                android:text="@string/order_filter"
+                android:gravity="center"
+                android:layout_weight="0.7"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <View
+            android:id="@+id/divider"
+            android:layout_below="@+id/order"
+            style="@style/split_line_grey" />
+
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/classify_recycler"
+            android:layout_below="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    <ImageView
+            android:id="@+id/empty_view"
+            android:visibility="gone"
+            android:layout_centerInParent="true"
+            android:src="@mipmap/empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+</RelativeLayout>

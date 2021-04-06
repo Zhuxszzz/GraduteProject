@@ -16,5 +16,5 @@ data class GoodListModel(
     var resName: String? = null,
 
     @SerializedName("goods_category")
-    val goodsCategoryList: List<GoodsCategoryModel>? = null
+    var goodsCategoryList: List<GoodsCategoryModel>? = null
 )

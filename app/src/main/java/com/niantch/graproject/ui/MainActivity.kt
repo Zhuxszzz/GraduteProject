@@ -4,13 +4,10 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import com.niantch.graproject.R
-import com.niantch.graproject.adapter.MyFragmentPagerAdapter
+import com.niantch.graproject.adapter.TabFragmentAdapter
 import com.niantch.graproject.databinding.ActivityMainBinding
 import com.niantch.graproject.model.ResDetailModel
 import com.niantch.graproject.ui.AddAddressActivity.Companion.ACTIVITY_CODE
-import com.tencent.tencentmap.mapsdk.maps.MapFragment
-import kotlinx.android.synthetic.main.activity_main.view.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -39,7 +36,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initViewPager() {
-        val fragmentAdapter = MyFragmentPagerAdapter(supportFragmentManager)
+        val fragmentAdapter = TabFragmentAdapter(supportFragmentManager)
         fragmentAdapter.fragments = this.fragments
         binding.vpFragmentsContainer.adapter = fragmentAdapter
         binding.tlFragmentBottom.setupWithViewPager(binding.vpFragmentsContainer)
