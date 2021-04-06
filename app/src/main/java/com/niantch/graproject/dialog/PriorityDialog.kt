@@ -3,8 +3,6 @@ package com.niantch.graproject.dialog
 /**
  * @description: Interface for multiple dialog with priority,
  * i.e. when a dialog is showing and another dialog needs to show
- * @since 2021-02-09 14:11
- * @author jitaoguo@tencent.com
  */
 interface PriorityDialog {
     /**

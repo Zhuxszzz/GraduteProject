@@ -6,8 +6,6 @@ import java.util.Vector
 /**
  * @description: Created by katacai on 2019-05-15. Migrate to current project.
  * @see PriorityDialog
- * @since 2021-01-15 11:40
- * @author jitaoguo@tencent.com
  */
 class PriorityDialogManager private constructor() {
 

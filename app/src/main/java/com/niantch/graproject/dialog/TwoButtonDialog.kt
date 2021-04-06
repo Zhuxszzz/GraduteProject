@@ -18,8 +18,6 @@ import kotlin.math.min
 
 /**
  * @description: Two Button Dialog with: 1. title 2. description 3. negative button 4. positive button
- * @since 2021-02-08 20:27
- * @author jitaoguo@tencent.com
  */
 class TwoButtonDialog(context: Context?) : DialogWrapper<Any?>(context) {
 

@@ -14,8 +14,6 @@ import java.lang.ref.WeakReference
 
 /**
  * @description: Holds a dialog, can bind data and set memory leak proof listeners
- * @since 2021-02-08 20:27
- * @author jitaoguo@tencent.com
  */
 abstract class DialogWrapper<T>(protected var mContext: Context?) : View.OnClickListener {
 

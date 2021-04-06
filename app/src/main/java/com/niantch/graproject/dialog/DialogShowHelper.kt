@@ -8,8 +8,6 @@ import android.util.Log
 
 /**
  * @description: Manipulate Dialog for safety reason, avoid activity lifecycle causing errors
- * @since 2021-02-08 20:27
- * @author jitaoguo@tencent.com
  */
 object DialogShowHelper {
     private const val TAG = "DialogShowUtils"
