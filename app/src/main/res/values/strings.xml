@@ -96,5 +96,6 @@
     <string name="alter_pwd">修改密码</string>
 
     <string name="set_pwd_warn">*新密码大于6位，且包含【英文大写、英文小写、特殊字符、数字】中的两种字符，不能与当前密码相同。</string>
+    <string name="address_tip">附近地址(点击地图选择)</string>
 
 </resources>

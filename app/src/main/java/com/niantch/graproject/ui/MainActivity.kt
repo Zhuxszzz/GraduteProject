@@ -19,6 +19,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        initFragment()
+        initViewPager()
     }
 
     override fun onStart() {
@@ -27,17 +29,19 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, AddAddressActivity::class.java)
             startActivityForResult(intent, ACTIVITY_CODE)
         }
-        initFragment()
-        initViewPager()
+
     }
 
     private fun initFragment() {
+        fragments.add(HomePageFragment())
+        fragments.add(CartFragment())
         fragments.add(UserFragment())
     }
 
     private fun initViewPager() {
         val fragmentAdapter = TabFragmentAdapter(supportFragmentManager)
         fragmentAdapter.fragments = this.fragments
+        fragmentAdapter.titles = arrayListOf("1","2","3","4")
         binding.vpFragmentsContainer.adapter = fragmentAdapter
         binding.tlFragmentBottom.setupWithViewPager(binding.vpFragmentsContainer)
     }

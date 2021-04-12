@@ -55,4 +55,5 @@
     <color name="dialog_negative">#E8E6E2</color>
     <!-- Dialog取消按钮色 -->
     <color name="dialog_positive">#AC966F</color>
+    <color name="selected_color">#FFCC33</color>
 </resources>

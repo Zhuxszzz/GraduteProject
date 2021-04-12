@@ -1,17 +1,14 @@
 package com.niantch.graproject.ui
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.PersistableBundle
-import android.util.AttributeSet
 import android.util.Log
 import android.view.View
-import android.widget.*
+import android.widget.PopupWindow
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.niantch.graproject.R
 import com.niantch.graproject.adapter.ClassifyResActivityAdapter
 import com.niantch.graproject.adapter.MultipleOrderPopWinAdapter
@@ -32,15 +29,6 @@ class ClassifyResActivity: AppCompatActivity(), View.OnClickListener {
     val RES_CLASSIFY = "res_classify"
     val RES_ORDER_MODE = "res_order_mode"
     lateinit var binding: ActivityClassifyResBinding
-
-    @BindView(R.id.back_btn)
-    var backBtn: ImageButton? = null
-
-    @BindView(R.id.classify_title)
-    var title: TextView? = null
-
-    @BindView(R.id.search)
-    var searchBtn: ImageButton? = null
 
 
     private var adapter: ClassifyResActivityAdapter? = null
@@ -117,14 +105,14 @@ class ClassifyResActivity: AppCompatActivity(), View.OnClickListener {
         })
     }
 
-    protected fun initView() {
-        backBtn!!.setOnClickListener(this)
-        searchBtn!!.setOnClickListener(this)
+    fun initView() {
+//        backBtn!!.setOnClickListener(this)
+//        searchBtn!!.setOnClickListener(this)
         binding.orderMultipleOrder.setOnClickListener(this)
         binding.orderShortDistance.setOnClickListener(this)
         binding.orderGoodCommon.setOnClickListener(this)
 //        title!!.text = intent.getStringExtra(OneFragment.RES_TITLE)
-        searchBtn!!.visibility = View.VISIBLE
+//        searchBtn!!.visibility = View.VISIBLE
 
 //        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
 //        binding.classifyRecycler.setLayoutManager(linearLayoutManager);
@@ -219,13 +207,14 @@ class ClassifyResActivity: AppCompatActivity(), View.OnClickListener {
                 @Throws(IOException::class)
                 override fun onResponse(call: Call?, response: Response) {
                     list!!.clear()
-                    list!!.addAll(
-                        (Gson().fromJson(
-                            response.body().string(),
-                            object :
-                                TypeToken<List<ResDetailModel?>?>() {}.type
-                        ) as List<*>?)!!
-                    )
+                    // TODO: 4/7/21  add mockked data
+//                    list!!.addAll(
+//                        (Gson().fromJson(
+//                            response.body().string(),
+//                            object :
+//                                TypeToken<List<ResDetailModel?>?>() {}.type
+//                        ) as List<*>?)!!
+//                    )
                     runOnUiThread { //请求完数据在UI线程更新ui
                         binding.firstLoad.visibility = View.GONE
                         if (list!!.size == 0 || list == null) {
