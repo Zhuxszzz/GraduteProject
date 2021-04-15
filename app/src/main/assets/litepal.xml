@@ -4,9 +4,9 @@
     <version value = "31"></version>
     <list>
         <!--模型类映射，一定要使用完整的类名-->
-        <mapping class="com.niantch.graproject.model.ResBuyCategoryNum"></mapping>
-        <mapping class="com.niantch.graproject.model.ResBuyCategoryNum"></mapping>
-        <mapping class="com.niantch.graproject.model.UserBean"></mapping>
-        <mapping class="com.niantch.graproject.model.AddressBean"/>
+        <mapping class="com.niantch.graproject.model.GoodsBuyCategoryNum"></mapping>
+        <mapping class="com.niantch.graproject.model.GoodsBuyCategoryNum"></mapping>
+        <mapping class="com.niantch.graproject.model.UserModel"></mapping>
+        <mapping class="com.niantch.graproject.model.AddressModel"/>
     </list>
 </litepal>

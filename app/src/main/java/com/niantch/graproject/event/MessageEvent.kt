@@ -1,6 +1,6 @@
 package com.niantch.graproject.event
 
-import com.niantch.graproject.model.GoodItemBean
+import com.niantch.graproject.model.GoodItemModel
 
 /**
  * author: niantchzhu
@@ -9,9 +9,9 @@ import com.niantch.graproject.model.GoodItemBean
 class MessageEvent {
     var num = 0
     var price = 0.0
-    var goods: List<GoodItemBean>? = null
+    var goods: List<GoodItemModel>? = null
 
-    fun MessageEvent(totalNum: Int, price: Double, goods: List<GoodItemBean>?) {
+    fun MessageEvent(totalNum: Int, price: Double, goods: List<GoodItemModel>?) {
         num = totalNum
         this.price = price
         this.goods = goods

@@ -64,7 +64,7 @@ class ResActivity : AppCompatActivity(), View.OnClickListener {
 
     private var totalMoney = 0.0
 
-    private var goodsListBean: GoodListBean? = null
+    private var goodsListModel: GoodListModel? = null
     private var categoryBeanList: List<GoodsCategoryBean>? = null
 
     private var adapter: TabFragmentAdapter? = null
@@ -74,7 +74,7 @@ class ResActivity : AppCompatActivity(), View.OnClickListener {
     private var resId = 0
     private var resName: String? = null
     private var discountString: String? = null
-    private var discountBeanList: List<DiscountBean>? = null
+    private var discountModelList: List<DiscountModel>? = null
 
     fun getResDetailModel(): ResDetailBean? {
         return homeRecResDetailBean
@@ -102,7 +102,7 @@ class ResActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     fun initData() {
-        goodsListBean = GoodListBean()
+        goodsListModel = GoodListModel()
         val intent = intent
         homeRecResDetailBean = intent.getSerializableExtra(RES_DETAIL) as ResDetailBean
         if (homeRecResDetailBean == null) {
@@ -166,9 +166,9 @@ class ResActivity : AppCompatActivity(), View.OnClickListener {
                 categoryBeanList = Gson().fromJson<List<GoodsCategoryBean>>(response.body().string(), object : TypeToken<List<GoodsCategoryBean?>?>() {}.type)
                 runOnUiThread {
                     try {
-                        goodsListBean?.goodsCategoryList = categoryBeanList
-                        goodsListBean?.resName = resName
-                        goodsListBean?.resId = resId
+                        goodsListModel?.goodsCategoryList = categoryBeanList
+                        goodsListModel?.resName = resName
+                        goodsListModel?.resId = resId
                         binding.progressBar.visibility = View.GONE
                         setViewPager()
                     } catch (e: Exception) {
@@ -225,7 +225,7 @@ class ResActivity : AppCompatActivity(), View.OnClickListener {
             R.id.pop_rl -> showSelectedDetailDialog()
             R.id.more_iv -> {
             }
-            R.id.go_to_account -> if (DataSupport.findAll(UserBean::class.java).size > 0) {
+            R.id.go_to_account -> if (DataSupport.findAll(UserModel::class.java).size > 0) {
                 val accountIntent = Intent(this, AccountActivity::class.java)
                 accountIntent.putExtra("res_id", resId)
                 accountIntent.putExtra("res_name", resName)
@@ -368,8 +368,8 @@ class ResActivity : AppCompatActivity(), View.OnClickListener {
         return view
     }
 
-    fun getGoodListModel(): GoodListBean? {
-        return goodsListBean
+    fun getGoodListModel(): GoodListModel? {
+        return goodsListModel
     }
 
     override fun onStart() {
@@ -383,7 +383,7 @@ class ResActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun showSelectedDetailDialog() {
-        val list: List<ResBuyItemNum> = DataSupport.where("resId = ?", resId.toString()).find(ResBuyItemNum::class.java)
+        val list: List<GoodsBuyItemNum> = DataSupport.where("resId = ?", resId.toString()).find(GoodsBuyItemNum::class.java)
         if (list.size > 0) {
             var packageMoney = 0.0
             val dialog = Dialog(this, R.style.ActionSheetDialogStyle)
@@ -444,8 +444,8 @@ class ResActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun setResDetail() {
         //设置满减活动
-        discountBeanList = homeRecResDetailBean!!.discountList
-        if (discountBeanList != null && discountBeanList!!.isNotEmpty()) {
+        discountModelList = homeRecResDetailBean!!.discountList
+        if (discountModelList != null && discountModelList!!.isNotEmpty()) {
             val sb = StringBuffer()
             for (discountBean in homeRecResDetailBean!!.discountList!!) {
                 val fillPrice = discountBean.filledVal.toInt()

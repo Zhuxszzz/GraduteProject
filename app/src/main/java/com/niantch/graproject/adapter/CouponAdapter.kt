@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.niantch.graproject.R
 import com.niantch.graproject.databinding.CouponItemBinding
-import com.niantch.graproject.model.CouponBean
+import com.niantch.graproject.model.CouponModel
 import com.niantch.graproject.ui.ResActivity
 import com.niantch.graproject.utils.GlobalContextUtil
 
@@ -15,7 +15,7 @@ import com.niantch.graproject.utils.GlobalContextUtil
  * author: niantchzhu
  * date: 2021
  */
-class CouponAdapter(private var allMoney: Double = 0.0, private var list: MutableList<CouponBean> = mutableListOf()) : RecyclerView.Adapter<CouponAdapter.CouponViewHolder>() {
+class CouponAdapter(private var allMoney: Double = 0.0, private var list: MutableList<CouponModel> = mutableListOf()) : RecyclerView.Adapter<CouponAdapter.CouponViewHolder>() {
 
     private var listener: OnUseBtnClickListener? = null
 
@@ -63,7 +63,7 @@ class CouponAdapter(private var allMoney: Double = 0.0, private var list: Mutabl
     }
 
     interface OnUseBtnClickListener {
-        fun useBtnClickListener(position: Int, couponBean: CouponBean?)
+        fun useBtnClickListener(position: Int, couponModel: CouponModel?)
     }
 
     fun setOnUseBtnClickListener(onUseBtnClickListener: OnUseBtnClickListener) {

@@ -64,5 +64,5 @@ data class ResDetailBean(
 
     //减价
     @SerializedName("discount_list")
-    var discountList: List<DiscountBean>? = null
+    var discountList: List<DiscountModel>? = null
 ) : DataSupport(), Serializable

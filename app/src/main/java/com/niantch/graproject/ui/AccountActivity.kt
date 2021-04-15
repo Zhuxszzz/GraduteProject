@@ -35,16 +35,16 @@ class AccountActivity: AppCompatActivity() {
     private var resNameText: String? = null
 
     //用户购买的详细数据
-    private var list: MutableList<ResBuyItemNum>? = null
-    private var addressList: MutableList<AddressBean>? = null
+    private var list: MutableList<GoodsBuyItemNum>? = null
+    private var addressList: MutableList<AddressModel>? = null
     private var allMoney = 0.0
     private var packageMoney = 0.0
     private var payTvList: MutableList<String>? = null
     private var payIvList: MutableList<Int>? = null
     private val payDialog: Dialog? = null
-    private val couponBean: CouponBean? = null
+    private val couponModel: CouponModel? = null
     private var reduceMoney = 0.0
-    private var discountBeanList: MutableList<DiscountBean>? = null
+    private var discountModelList: MutableList<DiscountModel>? = null
 
     var df = DecimalFormat("#0.0")
 
@@ -61,8 +61,8 @@ class AccountActivity: AppCompatActivity() {
     fun initData() {
         resId = intent.getIntExtra("res_id", -1)
         resNameText = intent.getStringExtra("res_name")
-        list = DataSupport.where("resId = ?", resId.toString()).find(ResBuyItemNum::class.java)
-        addressList = DataSupport.where("selected = ?", "1").find(AddressBean::class.java)
+        list = DataSupport.where("resId = ?", resId.toString()).find(GoodsBuyItemNum::class.java)
+        addressList = DataSupport.where("selected = ?", "1").find(AddressModel::class.java)
         if (!addressList.isNullOrEmpty()) {
             binding.tvLocation.setText(addressList!![0].address)
             binding.tvName.setText(addressList!![0].name)
@@ -88,8 +88,8 @@ class AccountActivity: AppCompatActivity() {
 
             @Throws(IOException::class)
             override fun onResponse(call: Call, response: Response) {
-                discountBeanList = Gson().fromJson<List<DiscountBean>>(response.body().string(), object : TypeToken<List<DiscountBean?>?>() {}.type) as MutableList<DiscountBean>?
-                for (discountBean in discountBeanList!!) {
+                discountModelList = Gson().fromJson<List<DiscountModel>>(response.body().string(), object : TypeToken<List<DiscountModel?>?>() {}.type) as MutableList<DiscountModel>?
+                for (discountBean in discountModelList!!) {
                     if (allMoney >= discountBean.filledVal) {
                         reduceMoney = discountBean.reduceVal
                     }
@@ -115,7 +115,7 @@ class AccountActivity: AppCompatActivity() {
                 }
             }
         })
-        binding.shopCart.howMoneyToDelivery.setText("￥" + (list as MutableList<ResBuyItemNum>).get(0).resExtraMoney)
+        binding.shopCart.howMoneyToDelivery.setText("￥" + (list as MutableList<GoodsBuyItemNum>).get(0).resExtraMoney)
         //设置包装费
         //设置包装费
         val price = packageMoney.toInt()
@@ -133,14 +133,14 @@ class AccountActivity: AppCompatActivity() {
 
     }
 
-    private fun initBuyItem(resBuyItemNum: ResBuyItemNum): View {
+    private fun initBuyItem(goodsBuyItemNum: GoodsBuyItemNum): View {
         val view: View = LayoutInflater.from(this).inflate(R.layout.buy_list_item, null)
         val name = view.findViewById<View>(R.id.account_item_name) as TextView
         val price = view.findViewById<View>(R.id.account_item_price) as TextView
         val num = view.findViewById<View>(R.id.account_item_num) as TextView
-        name.setText(resBuyItemNum.itemName)
-        price.text = "￥" + resBuyItemNum.buyNum * resBuyItemNum.itemPrice
-        num.text = "×" + resBuyItemNum.buyNum.toString() + ""
+        name.setText(goodsBuyItemNum.itemName)
+        price.text = "￥" + goodsBuyItemNum.buyNum * goodsBuyItemNum.itemPrice
+        num.text = "×" + goodsBuyItemNum.buyNum.toString() + ""
         return view
     }
 
@@ -155,10 +155,10 @@ class AccountActivity: AppCompatActivity() {
             binding.loading.setVisibility(View.VISIBLE)
 
             //用户使用红包后需要在数据库中将该用户的红包使用状态改变
-            if (couponBean != null) {
+            if (couponModel != null) {
                 val hashMap = HashMap<String, String?>()
                 hashMap["buyer_id"] = userId.toString()
-                hashMap["red_packet_id"] = java.lang.String.valueOf(couponBean.redPaperId)
+                hashMap["red_packet_id"] = java.lang.String.valueOf(couponModel.redPaperId)
                 HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH + HttpUtil.ALTER_USER_RED_PACKET, hashMap, object : Callback {
                     override fun onFailure(call: Call, e: IOException) {}
 
@@ -188,20 +188,20 @@ class AccountActivity: AppCompatActivity() {
                     //预约时间
                     hashMap["servicetime"] = binding.tvDeliverTime.getText().toString()
                 }
-                if (couponBean == null) {
+                if (couponModel == null) {
                     hashMap["pay_amount"] = (allMoney - reduceMoney).toString()
                 } else {
-                    hashMap["pay_amount"] = java.lang.String.valueOf(allMoney - reduceMoney - couponBean.price)
+                    hashMap["pay_amount"] = java.lang.String.valueOf(allMoney - reduceMoney - couponModel.price)
                 }
             } else {
                 hashMap["isdeliver"] = 0.toString()
                 hashMap["order_amount"] = java.lang.String.valueOf(allMoney - list!![0].resExtraMoney) //堂取减去配送费
                 //预约时间
                 hashMap["servicetime"] = binding.tvTakenTime.getText().toString()
-                if (couponBean == null) {
+                if (couponModel == null) {
                     hashMap["pay_amount"] = java.lang.String.valueOf(allMoney - reduceMoney - list!![0].resExtraMoney)
                 } else {
-                    hashMap["pay_amount"] = java.lang.String.valueOf(allMoney - reduceMoney - couponBean.price - list!![0].resExtraMoney)
+                    hashMap["pay_amount"] = java.lang.String.valueOf(allMoney - reduceMoney - couponModel.price - list!![0].resExtraMoney)
                 }
             }
 
@@ -217,8 +217,8 @@ class AccountActivity: AppCompatActivity() {
                         Toast.makeText(this@AccountActivity, "支付成功", Toast.LENGTH_SHORT).show()
                         binding.loading.setVisibility(View.GONE)
                         //删除本地数据库购物车信息
-                        DataSupport.deleteAll(ResBuyItemNum::class.java, "resId = ?", list!![0].resId)
-                        DataSupport.deleteAll(ResBuyCategoryNum::class.java, "resId = ?", list!![0].resId)
+                        DataSupport.deleteAll(GoodsBuyItemNum::class.java, "resId = ?", list!![0].resId)
+                        DataSupport.deleteAll(GoodsBuyCategoryNum::class.java, "resId = ?", list!![0].resId)
                         startActivity(Intent(this@AccountActivity, MainActivity::class.java))
                         finish()
                     }

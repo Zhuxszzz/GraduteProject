@@ -24,8 +24,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.niantch.graproject.R
 import com.niantch.graproject.databinding.UserFragmentBinding
-import com.niantch.graproject.model.CouponBean
-import com.niantch.graproject.model.UserBean
+import com.niantch.graproject.model.CouponModel
+import com.niantch.graproject.model.UserModel
 import com.niantch.graproject.utils.FileStorage
 import com.niantch.graproject.utils.ImageUtil
 import com.niantch.graproject.utils.HttpUtil
@@ -54,7 +54,7 @@ class UserFragment : Fragment(R.layout.user_fragment) {
     private val progressBar: ProgressBar? = null
 
 
-    private val couponBeanList: ArrayList<CouponBean>? = null
+    private val couponModelList: ArrayList<CouponModel>? = null
 
     private var imageUri //原图保存地址
             : Uri = Uri.EMPTY
@@ -64,7 +64,7 @@ class UserFragment : Fragment(R.layout.user_fragment) {
 
     private var dialog: Dialog? =null
 
-    private var userBean: UserBean? = null
+    private var userBean: UserModel? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -97,7 +97,7 @@ class UserFragment : Fragment(R.layout.user_fragment) {
         }
         binding.fragmentMyCouponLl.setOnClickListener {
             val intentRedPaper = Intent(activity, CouponActivity::class.java)
-            intentRedPaper.putExtra("coupon_list", couponBeanList)
+            intentRedPaper.putExtra("coupon_list", couponModelList)
             startActivity(intentRedPaper)
         }
         binding.logOut.setOnClickListener {
@@ -105,7 +105,7 @@ class UserFragment : Fragment(R.layout.user_fragment) {
         }
     }
 
-    fun setUserInfo(bean: UserBean?) {
+    fun setUserInfo(bean: UserModel?) {
         if (bean == null) {
             binding.tvSignMask.visibility = View.VISIBLE
             return
@@ -200,7 +200,7 @@ class UserFragment : Fragment(R.layout.user_fragment) {
                     val sex = rb.text.toString()
                     //                        userSexText.text = sex;
                     //将修改保存到本地数据库
-                    val list: List<UserBean> = DataSupport.findAll(UserBean::class.java)
+                    val list: List<UserModel> = DataSupport.findAll(UserModel::class.java)
                     //将更改保存到远程数据库
                     progressBar?.visibility = View.VISIBLE
                     val hash = HashMap<String, String?>()
@@ -228,7 +228,7 @@ class UserFragment : Fragment(R.layout.user_fragment) {
                                     if (status != 0) {
                                         binding.userSexText.text = sex
                                         //保存到本地数据库
-                                        val userBean: UserBean = list[0]
+                                        val userBean: UserModel = list[0]
                                         if (sex == "男") {
                                             userBean.userSex = 1
                                         } else {
@@ -390,8 +390,8 @@ class UserFragment : Fragment(R.layout.user_fragment) {
                 files.add(imagePath!!)
                 val hashMap = HashMap<String, String>()
                 hashMap["user_id"] = PreferenceManager.getDefaultSharedPreferences(activity).getInt("user_id", -1).toString()
-                if (DataSupport.findAll(UserBean::class.java).get(0).userImg != null) {
-                    hashMap["user_img"] = DataSupport.findAll(UserBean::class.java)[0].userImg ?: ""
+                if (DataSupport.findAll(UserModel::class.java).get(0).userImg != null) {
+                    hashMap["user_img"] = DataSupport.findAll(UserModel::class.java)[0].userImg ?: ""
                 }
                 HttpUtil.upLoadImgsRequest(HttpUtil.HOME_PATH + HttpUtil.UPLOAD_IMG_API, hashMap, files, object : Callback {
                     override fun onFailure(call: Call, e: IOException) {
@@ -409,8 +409,8 @@ class UserFragment : Fragment(R.layout.user_fragment) {
                         try {
                             val jsonObject = JSONObject(responseText)
                             //将新上传的图片的服务器路径保存到用户信息中
-                            val list: List<UserBean> = DataSupport.findAll(UserBean::class.java)
-                            val userBean: UserBean = list[0]
+                            val list: List<UserModel> = DataSupport.findAll(UserModel::class.java)
+                            val userBean: UserModel = list[0]
                             userBean.userImg = jsonObject["url"] as String
                             userBean.save()
                             activity!!.runOnUiThread { //保存本地图片头像的路径

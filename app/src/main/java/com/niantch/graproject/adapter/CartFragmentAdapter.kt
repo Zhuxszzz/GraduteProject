@@ -10,14 +10,14 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.niantch.graproject.R
 import com.niantch.graproject.databinding.CartFragmentItemBinding
-import com.niantch.graproject.model.ResBuyItemNum
+import com.niantch.graproject.model.GoodsBuyItemNum
 import com.niantch.graproject.ui.AccountActivity
 import com.niantch.graproject.ui.ResActivity
 import com.niantch.graproject.ui.ResActivity.Companion.RES_ID
 import com.niantch.graproject.utils.ImageUtil
 import java.text.DecimalFormat
 
-class CartFragmentAdapter(val context: Context, val resBuyItemNumList: ArrayList<ResBuyItemNum>): RecyclerView.Adapter<CartFragmentAdapter.CartItemViewHolder>() {
+class CartFragmentAdapter(val context: Context, val goodsBuyItemNumList: ArrayList<GoodsBuyItemNum>): RecyclerView.Adapter<CartFragmentAdapter.CartItemViewHolder>() {
     private val resIdList =  ArrayList<String>()
     private var listener: ItemDeleteBtnListener? = null
 
@@ -29,7 +29,7 @@ class CartFragmentAdapter(val context: Context, val resBuyItemNumList: ArrayList
     override fun getItemCount(): Int {
 
         //该方法计算ItemCount返回的不是resBuyItemNumList总数而是店铺数量,所以对应的position也不是resBuyItemNumList中的position
-        for (resBuyItemNum in resBuyItemNumList) {
+        for (resBuyItemNum in goodsBuyItemNumList) {
             if (!resIdList.contains(resBuyItemNum.resId)) {
                 resIdList.add(resBuyItemNum.resId ?: "")
             }
@@ -41,12 +41,12 @@ class CartFragmentAdapter(val context: Context, val resBuyItemNumList: ArrayList
         val df = DecimalFormat("#0.0")
         //该list为点击结算跳页时携带的数据,该resId的店铺的购买数据
         //该list为点击结算跳页时携带的数据,该resId的店铺的购买数据
-        val list: MutableList<ResBuyItemNum> = java.util.ArrayList()
+        val list: MutableList<GoodsBuyItemNum> = java.util.ArrayList()
         var sum = 0.0
         var packageMoney = 0.0
         var deliverPrice = 0.0
         holder.binding.resItemContainer.removeAllViews()
-        for (resBuyItemNum in resBuyItemNumList) {
+        for (resBuyItemNum in goodsBuyItemNumList) {
             if (resBuyItemNum.resId.equals(resIdList[position])) {
                 holder.binding.resItemContainer.addView(
                         initResBuyItem(resBuyItemNum.itemImg, resBuyItemNum.itemName, resBuyItemNum.buyNum,

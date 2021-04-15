@@ -19,5 +19,5 @@ data class GoodsCategoryBean(
     var buyNum: Int = 0,//代码中设置的，不是server中取到的
 
     @SerializedName("goods_item")
-    var goodsItemList: List<GoodItemBean>? = null
+    var goodsItemList: List<GoodItemModel>? = null
 )

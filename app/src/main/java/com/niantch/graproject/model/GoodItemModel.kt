@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName
  * @datetime:  2021
  * @desc:
  */
-data class GoodItemBean(
+data class GoodItemModel(
     var id: Int = 0,//此id就是categoryId，是代码中设置的GoodsCategoryBean中的此id就是categoryId,不是再次通过server端取到的
 
     @SerializedName("category_id")

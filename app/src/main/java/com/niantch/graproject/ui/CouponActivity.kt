@@ -13,7 +13,7 @@ import com.google.gson.reflect.TypeToken
 import com.niantch.graproject.R
 import com.niantch.graproject.adapter.CouponAdapter
 import com.niantch.graproject.databinding.ActivityCouponBinding
-import com.niantch.graproject.model.CouponBean
+import com.niantch.graproject.model.CouponModel
 import com.niantch.graproject.utils.HttpUtil
 import okhttp3.Call
 import okhttp3.Callback
@@ -29,7 +29,7 @@ import kotlin.collections.ArrayList
 class CouponActivity: AppCompatActivity(R.layout.activity_coupon) {
     private lateinit var binding: ActivityCouponBinding
     private var adapter: CouponAdapter? = null
-    private var list : ArrayList<CouponBean>? = null
+    private var list : ArrayList<CouponModel>? = null
     private var allMoney = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
@@ -43,7 +43,7 @@ class CouponActivity: AppCompatActivity(R.layout.activity_coupon) {
     }
 
     fun initData() {
-        list = intent.getSerializableExtra("coupon_list") as ArrayList<CouponBean>
+        list = intent.getSerializableExtra("coupon_list") as ArrayList<CouponModel>
         if (!list.isNullOrEmpty()) {
             adapter = CouponAdapter( 0.0, list!!)
             binding.recycler.adapter = adapter
@@ -64,11 +64,11 @@ class CouponActivity: AppCompatActivity(R.layout.activity_coupon) {
                 override fun onResponse(call: Call, response: Response) {
                     val responseText = response.body().string()
                     list?.clear()
-                    list?.addAll(Gson().fromJson<List<CouponBean>>(responseText, object : TypeToken<List<CouponBean?>?>() {}.type))
+                    list?.addAll(Gson().fromJson<List<CouponModel>>(responseText, object : TypeToken<List<CouponModel?>?>() {}.type))
                     adapter = CouponAdapter(allMoney, list!!)
                     adapter?.setOnUseBtnClickListener(object : CouponAdapter.OnUseBtnClickListener {
-                        override fun useBtnClickListener(position: Int, couponBean: CouponBean?) {
-                            setResult(RESULT_OK, Intent().putExtra("coupon", couponBean))
+                        override fun useBtnClickListener(position: Int, couponModel: CouponModel?) {
+                            setResult(RESULT_OK, Intent().putExtra("coupon", couponModel))
                             finish()
                         }
                     })

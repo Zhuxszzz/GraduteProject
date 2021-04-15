@@ -9,7 +9,7 @@ import java.io.Serializable
  * @datetime:  2021
  * @desc:
  */
-data class OrderBean(
+data class OrderModel(
     var id: Int = 0,
     @SerializedName("order_id")
     var orderId: String? = null,
@@ -39,5 +39,5 @@ data class OrderBean(
     var orderDescription: String? = null,
 
     @SerializedName("order_detail")
-    var orderDetail: List<ResBuyItemNum>? = null
+    var orderDetail: List<GoodsBuyItemNum>? = null
 ): Serializable

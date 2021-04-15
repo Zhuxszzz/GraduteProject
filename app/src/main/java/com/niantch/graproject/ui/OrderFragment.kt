@@ -14,8 +14,8 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.niantch.graproject.adapter.OrderFragmentAdapter
 import com.niantch.graproject.databinding.OrderFagmentBinding
-import com.niantch.graproject.model.OrderBean
-import com.niantch.graproject.model.UserBean
+import com.niantch.graproject.model.OrderModel
+import com.niantch.graproject.model.UserModel
 import com.niantch.graproject.ui.UserFragment.Companion.REQUEST_LOGIN
 import com.niantch.graproject.utils.HttpUtil
 import okhttp3.Call
@@ -36,7 +36,7 @@ class OrderFragment: Fragment() {
     private lateinit var binding: OrderFagmentBinding
     private var adapter: OrderFragmentAdapter? = null
     private var linearLayoutManager: LinearLayoutManager? = null
-    private var orderList = ArrayList<OrderBean>()
+    private var orderList = ArrayList<OrderModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = OrderFagmentBinding.inflate(inflater, container, false)
@@ -54,7 +54,7 @@ class OrderFragment: Fragment() {
             val intent = Intent(context, LoginActivity::class.java)
             startActivityForResult(intent, REQUEST_LOGIN)
         })
-        if (DataSupport.findAll(UserBean::class.java).size > 0) {
+        if (DataSupport.findAll(UserModel::class.java).size > 0) {
             binding.loginBtn.setVisibility(View.GONE)
             binding.orderFragmentRecycler.setLayoutManager(linearLayoutManager)
             requestListData()
@@ -92,7 +92,7 @@ class OrderFragment: Fragment() {
                                         val jsonObject = JSONObject(responseText)
                                         if (jsonObject.getInt("state") == 1) {
                                             orderList.clear()
-                                            orderList.addAll(Gson().fromJson<Any>(jsonObject.getJSONArray("data").toString(), object : TypeToken<List<OrderBean?>?>() {}.type) as List<OrderBean>)
+                                            orderList.addAll(Gson().fromJson<Any>(jsonObject.getJSONArray("data").toString(), object : TypeToken<List<OrderModel?>?>() {}.type) as List<OrderModel>)
                                             adapter?.notifyDataSetChanged()
                                             Toast.makeText(context, "订单已取消!", Toast.LENGTH_SHORT).show()
                                         } else {
@@ -115,7 +115,7 @@ class OrderFragment: Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if (DataSupport.findAll(UserBean::class.java).size == 0) {
+        if (DataSupport.findAll(UserModel::class.java).size == 0) {
             binding.loginBtn.visibility = View.VISIBLE
             binding.orderFragmentRecycler.visibility = View.GONE
             binding.listEmpty.visibility = View.GONE
@@ -153,7 +153,7 @@ class OrderFragment: Fragment() {
                         val status = jsonObject.getInt("status")
                         if (status != 0) {
                             orderList.clear()
-                            orderList.addAll(Gson().fromJson<Any>(jsonObject.getJSONArray("data").toString(), object : TypeToken<List<OrderBean?>?>() {}.type) as List<OrderBean>)
+                            orderList.addAll(Gson().fromJson<Any>(jsonObject.getJSONArray("data").toString(), object : TypeToken<List<OrderModel?>?>() {}.type) as List<OrderModel>)
                             if (orderList.size == 0) {
                                 binding.orderFragmentRecycler.visibility = View.GONE
                                 binding.listEmpty.visibility = View.VISIBLE

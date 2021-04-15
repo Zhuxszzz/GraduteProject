@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName
  * @datetime:  2021
  * @desc:
  */
-data class DiscountBean(
+data class DiscountModel(
     @SerializedName("shop_id")
     var resId: Int = 0,
     @SerializedName("filled_value")

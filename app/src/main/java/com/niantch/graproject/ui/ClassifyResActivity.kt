@@ -13,7 +13,7 @@ import com.niantch.graproject.R
 import com.niantch.graproject.adapter.ClassifyResActivityAdapter
 import com.niantch.graproject.adapter.MultipleOrderPopWinAdapter
 import com.niantch.graproject.databinding.ActivityClassifyResBinding
-import com.niantch.graproject.model.ResBuyItemNum
+import com.niantch.graproject.model.GoodsBuyItemNum
 import com.niantch.graproject.model.ResDetailBean
 import com.niantch.graproject.utils.HttpUtil
 import okhttp3.Call
@@ -232,14 +232,14 @@ class ClassifyResActivity: AppCompatActivity(), View.OnClickListener {
     }
 
     private fun notifyResBuyNum() {
-        val resBuyCategoryNumList: List<ResBuyItemNum> =
+        val goodsBuyCategoryNumList: List<GoodsBuyItemNum> =
             DataSupport.findAll(
-                ResBuyItemNum::class.java
+                GoodsBuyItemNum::class.java
             )
         val resIdList: MutableList<String> =
             ArrayList()
         if (list != null) {
-            if (resBuyCategoryNumList != null && resBuyCategoryNumList.size > 0) {
+            if (goodsBuyCategoryNumList != null && goodsBuyCategoryNumList.size > 0) {
                 val resBuyNumTable =
                     Hashtable<String, Int>()
                 //将resBuyCategoryNumList中的添加到购物车的数量按resId设置给resBuyNumTable
@@ -247,7 +247,7 @@ class ClassifyResActivity: AppCompatActivity(), View.OnClickListener {
                     resBuyNumTable[java.lang.String.valueOf(list!![i].resId)] = 0
                     resIdList.add(list!![i].resId.toString() + "")
                 }
-                for (resBuyCategoryNum in resBuyCategoryNumList) {
+                for (resBuyCategoryNum in goodsBuyCategoryNumList) {
                     if (resIdList.contains(resBuyCategoryNum.resId)) {
                         val num: Int =
                             resBuyNumTable[resBuyCategoryNum.resId]!! + resBuyCategoryNum.buyNum

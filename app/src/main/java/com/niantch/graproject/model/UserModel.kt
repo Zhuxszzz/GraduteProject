@@ -9,7 +9,7 @@ import org.litepal.crud.DataSupport
  * @datetime:  2021
  * @desc:
  */
-data class UserBean(
+data class UserModel(
     //存到本地数据库中的id
     var id: Int = 0,
     //用户id

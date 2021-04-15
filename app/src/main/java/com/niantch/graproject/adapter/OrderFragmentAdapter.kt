@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.niantch.graproject.databinding.OrderFragmentItemBinding
-import com.niantch.graproject.model.OrderBean
+import com.niantch.graproject.model.OrderModel
 import com.niantch.graproject.ui.ResActivity
 import com.niantch.graproject.utils.ImageUtil
 import java.lang.String
@@ -16,7 +16,7 @@ import java.lang.String
  * author: niantchzhu
  * date: 2021
  */
-class OrderFragmentAdapter(val context: Context, val orderList: List<OrderBean>) : RecyclerView.Adapter<OrderFragmentAdapter.ViewHolder>() {
+class OrderFragmentAdapter(val context: Context, val orderList: List<OrderModel>) : RecyclerView.Adapter<OrderFragmentAdapter.ViewHolder>() {
 
     private var listener: OnItemBtnClickListener? = null
 

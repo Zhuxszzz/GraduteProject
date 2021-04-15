@@ -4,27 +4,22 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.niantch.graproject.R
 import com.niantch.graproject.adapter.CartFragmentAdapter
 import com.niantch.graproject.databinding.CartFragmentBinding
-import com.niantch.graproject.dialog.DialogShowHelper
-import com.niantch.graproject.dialog.TwoButtonDialog
-import com.niantch.graproject.model.ResBuyCategoryNum
-import com.niantch.graproject.model.ResBuyItemNum
-import com.niantch.graproject.model.UserBean
+import com.niantch.graproject.model.GoodsBuyCategoryNum
+import com.niantch.graproject.model.GoodsBuyItemNum
+import com.niantch.graproject.model.UserModel
 import org.litepal.crud.DataSupport
 
 class CartFragment: Fragment(R.layout.cart_fragment) {
     lateinit var binding: CartFragmentBinding
     var cartFragmentAdapter: CartFragmentAdapter? = null
-    var resBuyItemNumList = ArrayList<ResBuyItemNum>()
+    var resBuyItemNumList = ArrayList<GoodsBuyItemNum>()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = CartFragmentBinding.bind(view)
@@ -38,9 +33,9 @@ class CartFragment: Fragment(R.layout.cart_fragment) {
     }
 
     fun initUI(){
-        if (DataSupport.findAll(UserBean::class.java).size > 0) {
+        if (DataSupport.findAll(UserModel::class.java).size > 0) {
             //本地数据库查询所有ResBuyItemNum数据
-            resBuyItemNumList = DataSupport.findAll(ResBuyItemNum::class.java) as ArrayList<ResBuyItemNum>
+            resBuyItemNumList = DataSupport.findAll(GoodsBuyItemNum::class.java) as ArrayList<GoodsBuyItemNum>
             binding.loginBtn.visibility = View.GONE
             if (resBuyItemNumList.size > 0) {
                 val linearLayoutManager = LinearLayoutManager(context)
@@ -81,9 +76,9 @@ class CartFragment: Fragment(R.layout.cart_fragment) {
         alertDialog.setTitle(context!!.resources.getString(R.string.delete_res))
         alertDialog.setMessage(context!!.resources.getString(R.string.delete_res_goods))
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, context!!.resources.getString(R.string.delete), DialogInterface.OnClickListener { dialog, which ->
-            DataSupport.deleteAll(ResBuyItemNum::class.java, "resId = ?", resId)
-            DataSupport.deleteAll(ResBuyCategoryNum::class.java, "resId = ?", resId)
-            resBuyItemNumList = DataSupport.findAll(ResBuyItemNum::class.java) as ArrayList<ResBuyItemNum>
+            DataSupport.deleteAll(GoodsBuyItemNum::class.java, "resId = ?", resId)
+            DataSupport.deleteAll(GoodsBuyCategoryNum::class.java, "resId = ?", resId)
+            resBuyItemNumList = DataSupport.findAll(GoodsBuyItemNum::class.java) as ArrayList<GoodsBuyItemNum>
             if (resBuyItemNumList.size > 0) {
                 //注意不能使用resBuyItemNumList.remove(position);cartFragmentAdapter.notifyItemRemoved(position);notifyItemRangeChanged(0,resBuyItemNumList.size());
                 // 删除，因为position不是resBuyItemNumList计算出来的，现在暂时使用重新设置cartFragmentAdapter方法刷新数据

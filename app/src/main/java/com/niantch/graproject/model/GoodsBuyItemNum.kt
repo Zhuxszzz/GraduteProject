@@ -10,7 +10,7 @@ import java.io.Serializable
  * @datetime:  2021
  * @desc:
  */
-data class ResBuyItemNum(
+data class GoodsBuyItemNum(
     var resId: String? = null,
 
     var resName: String = "",
