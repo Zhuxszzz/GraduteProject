@@ -15,7 +15,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.niantch.graproject.R
 import com.niantch.graproject.databinding.OneFragmentBinding
-import com.niantch.graproject.model.ResDetailBean
+import com.niantch.graproject.model.ShopDetailModel
 import com.niantch.graproject.utils.ImageUtil
 import com.niantch.graproject.viewmodel.ResViewModel
 
@@ -43,10 +43,10 @@ class HomePageFragment : Fragment(R.layout.one_fragment) {
 
     private lateinit var binding: OneFragmentBinding
     private val resViewModel: ResViewModel by activityViewModels()
-    private var adapter: BaseQuickAdapter<ResDetailBean, BaseViewHolder>? = null
+    private var adapter: BaseQuickAdapter<ShopDetailModel, BaseViewHolder>? = null
     private var recycleHeadView: View? = null
 
-    private val homeRecResDetailList = mutableListOf<ResDetailBean>()
+    private val homeRecResDetailList = mutableListOf<ShopDetailModel>()
     var discountString: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -151,8 +151,8 @@ class HomePageFragment : Fragment(R.layout.one_fragment) {
         val linearLayoutManager = LinearLayoutManager(context)
         binding.oneFragmentRv.setLayoutManager(linearLayoutManager)
 
-        adapter = object : BaseQuickAdapter<ResDetailBean, BaseViewHolder>(R.layout.one_fragment_content_item, homeRecResDetailList) {
-            override fun convert(holder: BaseViewHolder, item: ResDetailBean) {
+        adapter = object : BaseQuickAdapter<ShopDetailModel, BaseViewHolder>(R.layout.one_fragment_content_item, homeRecResDetailList) {
+            override fun convert(holder: BaseViewHolder, item: ShopDetailModel) {
                 holder.setGone(R.id.one_fragment_item_reduce_container, false)
 
                 //设置添加到购物车的数量，红点显示

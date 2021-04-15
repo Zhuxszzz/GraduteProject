@@ -11,7 +11,7 @@ import java.io.Serializable
  * @datetime:  2021
  * @desc:
  */
-data class ResDetailBean(
+data class ShopDetailModel(
     //存到本地数据库中都要设置id
     val id: Int = 0,
 

@@ -51,7 +51,7 @@ class ResActivity : AppCompatActivity(), View.OnClickListener {
         val RES_ID = "res_id"
     }
     private lateinit var binding: ActivityResBinding
-    private var homeRecResDetailBean: ResDetailBean? = null
+    private var homeRecShopDetailModel: ShopDetailModel? = null
 
     //优惠总数
     private var specialNum = 0
@@ -76,8 +76,8 @@ class ResActivity : AppCompatActivity(), View.OnClickListener {
     private var discountString: String? = null
     private var discountModelList: List<DiscountModel>? = null
 
-    fun getResDetailModel(): ResDetailBean? {
-        return homeRecResDetailBean
+    fun getResDetailModel(): ShopDetailModel? {
+        return homeRecShopDetailModel
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -104,8 +104,8 @@ class ResActivity : AppCompatActivity(), View.OnClickListener {
     fun initData() {
         goodsListModel = GoodListModel()
         val intent = intent
-        homeRecResDetailBean = intent.getSerializableExtra(RES_DETAIL) as ResDetailBean
-        if (homeRecResDetailBean == null) {
+        homeRecShopDetailModel = intent.getSerializableExtra(RES_DETAIL) as ShopDetailModel
+        if (homeRecShopDetailModel == null) {
             resId = intent.getStringExtra(RES_ID).toInt()
             resName = intent.getStringExtra("res_name")
 
@@ -129,7 +129,7 @@ class ResActivity : AppCompatActivity(), View.OnClickListener {
                         val jsonObject = JSONObject(responseText)
                         val status = jsonObject.getInt("status")
                         if (status == 1) {
-                            homeRecResDetailBean = Gson().fromJson(jsonObject.getJSONObject("data").toString(), ResDetailBean::class.java)
+                            homeRecShopDetailModel = Gson().fromJson(jsonObject.getJSONObject("data").toString(), ShopDetailModel::class.java)
                             runOnUiThread {
                                 setResDetail()
                                 requestResGoods()
@@ -141,8 +141,8 @@ class ResActivity : AppCompatActivity(), View.OnClickListener {
             })
         } else {
             setResDetail()
-            resId = homeRecResDetailBean?.resId ?: 0
-            resName = homeRecResDetailBean?.resName
+            resId = homeRecShopDetailModel?.resId ?: 0
+            resName = homeRecShopDetailModel?.resName
             requestResGoods()
         }
     }
@@ -259,7 +259,7 @@ class ResActivity : AppCompatActivity(), View.OnClickListener {
                 } else {
                     binding.myShop.totalPrice.text = "¥$price2"
                 }
-                if (event.price >= homeRecResDetailBean!!.resDeliverMoney) {
+                if (event.price >= homeRecShopDetailModel!!.resDeliverMoney) {
                     binding.myShop.howMoneyToDelivery.visibility = View.GONE
                     binding.myShop.goToAccount.visibility = View.VISIBLE
                     binding.myShop.goToAccount.text = getString(R.string.go_to_account)
@@ -267,9 +267,9 @@ class ResActivity : AppCompatActivity(), View.OnClickListener {
                     binding.myShop.goToAccount.visibility = View.GONE
                     binding.myShop.howMoneyToDelivery.visibility = View.VISIBLE
                     //设置还差多少钱起送
-                    val price = (homeRecResDetailBean!!.resDeliverMoney - event.price.toInt()) as Int
-                    if (homeRecResDetailBean!!.resDeliverMoney - event.price.toInt() > price) {
-                        binding.myShop.howMoneyToDelivery.text = "还差￥" + df.format(homeRecResDetailBean!!.resDeliverMoney - event.price.toInt()) + "起送"
+                    val price = (homeRecShopDetailModel!!.resDeliverMoney - event.price.toInt()) as Int
+                    if (homeRecShopDetailModel!!.resDeliverMoney - event.price.toInt() > price) {
+                        binding.myShop.howMoneyToDelivery.text = "还差￥" + df.format(homeRecShopDetailModel!!.resDeliverMoney - event.price.toInt()) + "起送"
                     } else {
                         binding.myShop.howMoneyToDelivery.text = "还差￥" + price + "起送"
                     }
@@ -281,7 +281,7 @@ class ResActivity : AppCompatActivity(), View.OnClickListener {
                 binding.myShop.goToAccount.visibility = View.GONE
                 binding.myShop.howMoneyToDelivery.visibility = View.VISIBLE
                 var deliverMoney = resources.getString(R.string.res_deliver_money)
-                deliverMoney = java.lang.String.format(deliverMoney, homeRecResDetailBean!!.resDeliverMoney)
+                deliverMoney = java.lang.String.format(deliverMoney, homeRecShopDetailModel!!.resDeliverMoney)
                 binding.myShop.howMoneyToDelivery.text = deliverMoney
             }
 
@@ -444,10 +444,10 @@ class ResActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun setResDetail() {
         //设置满减活动
-        discountModelList = homeRecResDetailBean!!.discountList
+        discountModelList = homeRecShopDetailModel!!.discountList
         if (discountModelList != null && discountModelList!!.isNotEmpty()) {
             val sb = StringBuffer()
-            for (discountBean in homeRecResDetailBean!!.discountList!!) {
+            for (discountBean in homeRecShopDetailModel!!.discountList!!) {
                 val fillPrice = discountBean.filledVal.toInt()
                 val reducePrice = discountBean.reduceVal.toInt()
                 if (discountBean.filledVal > fillPrice) {
@@ -476,16 +476,16 @@ class ResActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         //设置商家名称
-        val resName: String? = homeRecResDetailBean?.resName
+        val resName: String? = homeRecShopDetailModel?.resName
         binding.resName.text = resName
 
         //设置起送费
         var deliverMoney = resources.getString(R.string.res_deliver_money)
-        deliverMoney = java.lang.String.format(deliverMoney, homeRecResDetailBean!!.resDeliverMoney)
+        deliverMoney = java.lang.String.format(deliverMoney, homeRecShopDetailModel!!.resDeliverMoney)
         binding.myShop.howMoneyToDelivery.text = deliverMoney
 
         //设置店铺顶部图片
-        val resImg: String? = homeRecResDetailBean?.shopPic
+        val resImg: String? = homeRecShopDetailModel?.shopPic
         if (!TextUtils.isEmpty(resImg)) {
             ImageUtil.load(this, resImg, binding.resImg, ImageUtil.REQUEST_OPTIONS)
             Thread(Runnable { //该方法必须在子线程中执行
@@ -496,19 +496,19 @@ class ResActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         //设置月售多少单
-        val monthOrder: Int = homeRecResDetailBean!!.resOrderNum
+        val monthOrder: Int = homeRecShopDetailModel!!.resOrderNum
         var monthOrderNum = resources.getString(R.string.res_month_sell_order)
         monthOrderNum = String.format(monthOrderNum, monthOrder)
         binding.resOrderNum.text = monthOrderNum
 
         //设置配送时间
-        val deliverTime: Int = homeRecResDetailBean?.resDeliverTime ?: 0
+        val deliverTime: Int = homeRecShopDetailModel?.resDeliverTime ?: 0
         var businessDeliverTime = resources.getString(R.string.res_business_deliver_time)
         businessDeliverTime = String.format(businessDeliverTime, deliverTime)
         binding.resDeliverTime.text = businessDeliverTime
 
         //设置星星评分
-        val starNum: Float = homeRecResDetailBean!!.resStar
+        val starNum: Float = homeRecShopDetailModel!!.resStar
         if (starNum > 0) {
             binding.resStar.rating = starNum
             binding.resScore.text = starNum.toString() + ""
@@ -516,7 +516,7 @@ class ResActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         //设置商家描述
-        val resDescription: String = homeRecResDetailBean?.resDescription ?: ""
+        val resDescription: String = homeRecShopDetailModel?.resDescription ?: ""
         if (!TextUtils.isEmpty(resDescription)) {
             binding.resDescription.text = resDescription
         }

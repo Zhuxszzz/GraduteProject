@@ -5,12 +5,12 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.niantch.graproject.adapter.TabFragmentAdapter
 import com.niantch.graproject.databinding.ActivityMainBinding
-import com.niantch.graproject.model.ResDetailBean
+import com.niantch.graproject.model.ShopDetailModel
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private val list = ArrayList<ResDetailBean>()
+    private val list = ArrayList<ShopDetailModel>()
     private val fragments = ArrayList<Fragment>()
 
     override fun onCreate(savedInstanceState: Bundle?) {

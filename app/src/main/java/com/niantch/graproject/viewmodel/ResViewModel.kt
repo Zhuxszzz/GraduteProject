@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.niantch.graproject.model.ResDetailBean
+import com.niantch.graproject.model.ShopDetailModel
 import com.niantch.graproject.utils.HttpUtil
 import okhttp3.Call
 import okhttp3.Callback
@@ -22,11 +22,11 @@ class ResViewModel: ViewModel() {
         const val TAG = "ResViewModel"
     }
 
-    val homePageRes = MutableLiveData<ArrayList<ResDetailBean>>()
+    val homePageRes = MutableLiveData<ArrayList<ShopDetailModel>>()
 
     fun fetchMediaLiveData() {
         Log.d(TAG, "go fetch data")
-        HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH + HttpUtil.OBTAIN_RECOMMEND_SHOP,HashMap(),  object : Callback {
+        HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH + HttpUtil.OBTAIN_RECOMMEND_SHOP, HashMap(),  object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 Log.e(TAG, e.message)
                 homePageRes.postValue(arrayListOf())
@@ -36,7 +36,7 @@ class ResViewModel: ViewModel() {
             override fun onResponse(call: Call, response: Response) {
                 val responseText = response.body().string()
                 Log.e(TAG, responseText)
-                homePageRes.postValue(Gson().fromJson<Any>(responseText, object : TypeToken<ArrayList<ResDetailBean?>?>() {}.type) as ArrayList<ResDetailBean>?)
+                homePageRes.postValue(Gson().fromJson<Any>(responseText, object : TypeToken<ArrayList<ShopDetailModel?>?>() {}.type) as ArrayList<ShopDetailModel>?)
             }
         })
     }

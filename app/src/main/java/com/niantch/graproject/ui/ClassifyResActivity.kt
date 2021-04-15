@@ -14,7 +14,7 @@ import com.niantch.graproject.adapter.ClassifyResActivityAdapter
 import com.niantch.graproject.adapter.MultipleOrderPopWinAdapter
 import com.niantch.graproject.databinding.ActivityClassifyResBinding
 import com.niantch.graproject.model.GoodsBuyItemNum
-import com.niantch.graproject.model.ResDetailBean
+import com.niantch.graproject.model.ShopDetailModel
 import com.niantch.graproject.utils.HttpUtil
 import okhttp3.Call
 import okhttp3.Callback
@@ -33,7 +33,7 @@ class ClassifyResActivity: AppCompatActivity(), View.OnClickListener {
 
 
     private var adapter: ClassifyResActivityAdapter? = null
-    private var list: MutableList<ResDetailBean>? = null
+    private var list: MutableList<ShopDetailModel>? = null
     private var linearLayoutManager: LinearLayoutManager? = null
     private var resClassify: String? =  null
     private var popWin: MultipleOrderPopupWindow? = null
@@ -46,7 +46,7 @@ class ClassifyResActivity: AppCompatActivity(), View.OnClickListener {
 
     protected fun initData() {
         resClassify = intent.getStringExtra(RES_CLASSIFY)
-        list = ArrayList<ResDetailBean>()
+        list = ArrayList<ShopDetailModel>()
         linearLayoutManager = LinearLayoutManager(this@ClassifyResActivity)
         binding.classifyRecycler.setLayoutManager(linearLayoutManager)
         adapter = ClassifyResActivityAdapter(this@ClassifyResActivity, list)
