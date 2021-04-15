@@ -56,6 +56,13 @@
         <item name="android:windowAnimationStyle">@style/dialogAnim</item>
     </style>
 
+    <style name="LineOneTheme">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0.5dp</item>
+        <item name="android:background">@color/colorLineGray</item>
+    </style>
+
+
     <style name="dialogAnim" parent="@android:style/Animation.Dialog">
         <item name="android:windowEnterAnimation">@anim/pop_enter_anim</item>
         <item name="android:windowExitAnimation">@anim/pop_exit_anim</item>
@@ -67,6 +74,21 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">10sp</item>
         <item name="android:background">@drawable/shop_cart_num_bg</item>
+    </style>
+    <style name="my_popup_item">
+        <item name="android:layout_height">45dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="head_icon_text_style">
+        <item name="android:textColor">@color/bottom_tab_text_normal_color</item>
+        <item name="android:layout_marginTop">@dimen/space_15px</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/space_25px</item>
     </style>
 
 </resources>

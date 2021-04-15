@@ -4,6 +4,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
+    <Button
+            android:layout_centerInParent="true"
+            android:textColor="@color/white"
+            android:visibility="gone"
+            android:id="@+id/login_btn"
+            android:padding="20px"
+            android:textSize="17sp"
+            android:text="登录后查看购物车"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
     <TextView
         android:id="@+id/tv_not_sign_warn"
         android:layout_width="wrap_content"
@@ -16,34 +28,15 @@
         android:visibility="gone" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_cart_list"
+        android:id="@+id/cart_fragment_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="30dp" />
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_alignParentBottom="true"
-        android:background="@color/cardview_dark_background"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/tv_total_price"
-            android:layout_width="40dp"
-            android:layout_height="20dp"
-            android:layout_gravity="center"
-            android:text="Total: 00.00"
-            android:textColor="#FFFFFF"
-            android:layout_margin="5dp" />
-
-        <TextView
-            android:id="@+id/tv_done"
-            android:layout_width="40dp"
-            android:layout_height="20dp"
-            android:layout_gravity="end"
-            android:layout_margin="5dp"
-            android:background="@drawable/btn_done"
-            android:text="DONE" />
-    </FrameLayout>
+    <ImageView
+            android:id="@+id/cart_empty"
+            android:visibility="gone"
+            android:layout_centerInParent="true"
+            android:src="@mipmap/empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 </RelativeLayout>

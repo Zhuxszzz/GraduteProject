@@ -13,8 +13,8 @@ import com.niantch.graproject.R
 import com.niantch.graproject.adapter.ClassifyResActivityAdapter
 import com.niantch.graproject.adapter.MultipleOrderPopWinAdapter
 import com.niantch.graproject.databinding.ActivityClassifyResBinding
-import com.niantch.graproject.model.ResBuyItemModel
-import com.niantch.graproject.model.ResDetailModel
+import com.niantch.graproject.model.ResBuyItemNum
+import com.niantch.graproject.model.ResDetailBean
 import com.niantch.graproject.utils.HttpUtil
 import okhttp3.Call
 import okhttp3.Callback
@@ -25,16 +25,17 @@ import java.util.*
 
 class ClassifyResActivity: AppCompatActivity(), View.OnClickListener {
 
-    private val TAG = "ClassifyResActivity"
-    val RES_CLASSIFY = "res_classify"
-    val RES_ORDER_MODE = "res_order_mode"
+    companion object {
+        private val TAG = "ClassifyResActivity"
+        val RES_CLASSIFY = "res_classify"
+    }
     lateinit var binding: ActivityClassifyResBinding
 
 
     private var adapter: ClassifyResActivityAdapter? = null
-    private var list: MutableList<ResDetailModel>? = null
+    private var list: MutableList<ResDetailBean>? = null
     private var linearLayoutManager: LinearLayoutManager? = null
-    private var resClassify: String? = null
+    private var resClassify: String? =  null
     private var popWin: MultipleOrderPopupWindow? = null
     private var selectedFlag = 0
 
@@ -45,7 +46,7 @@ class ClassifyResActivity: AppCompatActivity(), View.OnClickListener {
 
     protected fun initData() {
         resClassify = intent.getStringExtra(RES_CLASSIFY)
-        list = ArrayList<ResDetailModel>()
+        list = ArrayList<ResDetailBean>()
         linearLayoutManager = LinearLayoutManager(this@ClassifyResActivity)
         binding.classifyRecycler.setLayoutManager(linearLayoutManager)
         adapter = ClassifyResActivityAdapter(this@ClassifyResActivity, list)
@@ -231,9 +232,9 @@ class ClassifyResActivity: AppCompatActivity(), View.OnClickListener {
     }
 
     private fun notifyResBuyNum() {
-        val resBuyCategoryNumList: List<ResBuyItemModel> =
+        val resBuyCategoryNumList: List<ResBuyItemNum> =
             DataSupport.findAll(
-                ResBuyItemModel::class.java
+                ResBuyItemNum::class.java
             )
         val resIdList: MutableList<String> =
             ArrayList()

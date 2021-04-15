@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName
  * @datetime:  2021
  * @desc:
  */
-data class GoodsCategoryModel(
+data class GoodsCategoryBean(
     @SerializedName("category_id")
     var categoryId: Int = 0,
     @SerializedName("category_name")
@@ -19,5 +19,5 @@ data class GoodsCategoryModel(
     var buyNum: Int = 0,//代码中设置的，不是server中取到的
 
     @SerializedName("goods_item")
-    var goodsItemList: List<GoodItemModel>? = null
+    var goodsItemList: List<GoodItemBean>? = null
 )

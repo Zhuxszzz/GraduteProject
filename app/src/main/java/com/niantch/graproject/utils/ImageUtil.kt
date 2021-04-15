@@ -7,7 +7,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.niantch.graproject.R
 
-object GlideUtil {
+object ImageUtil {
     val REQUEST_OPTIONS: RequestOptions = RequestOptions()
             .placeholder(R.drawable.no_banner)
             .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC) //硬盘缓存,内存缓存是自动开启的

@@ -13,11 +13,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.niantch.graproject.R
 import com.niantch.graproject.databinding.OneFragmentContentItemBinding
 import com.niantch.graproject.model.Constants.RES_DETAIL
-import com.niantch.graproject.model.ResDetailModel
+import com.niantch.graproject.model.ResDetailBean
 import com.niantch.graproject.ui.ResActivity
-import com.niantch.graproject.utils.GlideUtil
+import com.niantch.graproject.utils.ImageUtil
 
-class ClassifyResActivityAdapter(var mContext: Context?,var homeRecResDetailBeanList: List<ResDetailModel>? ): RecyclerView.Adapter<ClassifyResActivityAdapter.ViewHolder>() {
+class ClassifyResActivityAdapter(var mContext: Context?,var homeRecResDetailBeanList: List<ResDetailBean>? ): RecyclerView.Adapter<ClassifyResActivityAdapter.ViewHolder>() {
 
     override fun getItemCount(): Int {
         return homeRecResDetailBeanList!!.size
@@ -29,34 +29,28 @@ class ClassifyResActivityAdapter(var mContext: Context?,var homeRecResDetailBean
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.one_fragment_item_reduce_container.setVisibility(View.GONE)
+        holder.one_fragment_item_reduce_container.visibility = View.GONE
 
         //设置添加到购物车的数量，红点显示
         if (homeRecResDetailBeanList!![position].buyNum > 0) {
-            holder.one_content_item_buy_num.setText(
-                homeRecResDetailBeanList!![position].buyNum.toString() + ""
-            )
+            holder.one_content_item_buy_num.text = homeRecResDetailBeanList!![position].buyNum.toString() + ""
             holder.one_content_item_buy_num.visibility = View.VISIBLE
         } else {
             holder.one_content_item_buy_num.visibility = View.GONE
         }
 
         //设置img
-        GlideUtil.load(
+        ImageUtil.load(
             mContext!!,
             homeRecResDetailBeanList!![position].resImg,
             holder.one_content_item_iv,
-            GlideUtil.REQUEST_OPTIONS
+            ImageUtil.REQUEST_OPTIONS
         )
         //店名
-        holder.one_fragment_content_item_name.setText(
-            homeRecResDetailBeanList!![position].resName
-        )
+        holder.one_fragment_content_item_name.text = homeRecResDetailBeanList!![position].resName
         //评分
         holder.one_fragment_star.rating = homeRecResDetailBeanList!![position].resStar
-        holder.one_fragment_score.setText(
-            homeRecResDetailBeanList!![position].resStar.toString() + ""
-        )
+        holder.one_fragment_score.text = homeRecResDetailBeanList!![position].resStar.toString() + ""
         //月售订单
         var orderNum =
             mContext!!.resources.getString(R.string.res_month_sell_order)
@@ -82,7 +76,7 @@ class ClassifyResActivityAdapter(var mContext: Context?,var homeRecResDetailBean
             homeRecResDetailBeanList!![position].resExtraMoney
         )
         holder.one_fragment_extra.text = extraMoney
-        holder.one_fragment_address.setText(homeRecResDetailBeanList!![position].resAddress)
+        holder.one_fragment_address.text = homeRecResDetailBeanList!![position].resAddress
         //配送时间
         var deliverTime =
             mContext!!.resources.getString(R.string.res_deliver_time)
@@ -95,7 +89,7 @@ class ClassifyResActivityAdapter(var mContext: Context?,var homeRecResDetailBean
                 .discountList != null && homeRecResDetailBeanList!![position]
                         .discountList!!.isNotEmpty()
         ) {
-            holder.one_fragment_item_reduce_container.setVisibility(View.VISIBLE)
+            holder.one_fragment_item_reduce_container.visibility = View.VISIBLE
             holder.divider.visibility = View.VISIBLE
             val sb = StringBuffer()
             for (discountBean in homeRecResDetailBeanList!![position]
@@ -116,7 +110,7 @@ class ClassifyResActivityAdapter(var mContext: Context?,var homeRecResDetailBean
             holder.one_fragment_item_reduce.text = sb.toString().substring(0, sb.length - 1)
         } else {
             holder.divider.visibility = View.GONE
-            holder.one_fragment_item_reduce_container.setVisibility(View.GONE)
+            holder.one_fragment_item_reduce_container.visibility = View.GONE
         }
 
         //设置每个item的点击事件

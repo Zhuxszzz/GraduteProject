@@ -8,13 +8,11 @@ import com.google.gson.annotations.SerializedName
  * @datetime:  2021
  * @desc:
  */
-data class GoodListModel(
-    //商店id
+data class DiscountBean(
     @SerializedName("shop_id")
     var resId: Int = 0,
-    @SerializedName("shop_name")
-    var resName: String? = null,
-
-    @SerializedName("goods_category")
-    var goodsCategoryList: List<GoodsCategoryModel>? = null
+    @SerializedName("filled_value")
+    var filledVal: Double = 0.0,
+    @SerializedName("reduce_value")
+    val reduceVal: Double = 0.0
 )

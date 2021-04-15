@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/space_40px"
+        android:paddingTop="@dimen/space_40px">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/head_icon_food"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/space_90px"
+                    android:layout_height="@dimen/space_90px"
+                    android:src="@mipmap/head_icon_des" />
+
+                <TextView
+                    style="@style/head_icon_text_style"
+                    android:text="@string/head_icon_food" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/head_icon_one"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/space_90px"
+                    android:layout_height="@dimen/space_90px"
+                    android:src="@mipmap/head_icon_one" />
+
+                <TextView
+                    style="@style/head_icon_text_style"
+                    android:text="@string/head_icon_one" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/head_icon_two"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/space_90px"
+                    android:layout_height="@dimen/space_90px"
+                    android:src="@mipmap/head_icon_two" />
+
+                <TextView
+                    style="@style/head_icon_text_style"
+                    android:text="@string/head_icon_two" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/head_icon_three"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/space_90px"
+                    android:layout_height="@dimen/space_90px"
+                    android:src="@mipmap/head_icon_three" />
+
+                <TextView
+                    style="@style/head_icon_text_style"
+                    android:text="@string/head_icon_three" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/head_icon_sweet"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/space_90px"
+                    android:layout_height="@dimen/space_90px"
+                    android:src="@mipmap/head_icon_sweet" />
+
+                <TextView
+                    style="@style/head_icon_text_style"
+                    android:text="@string/head_icon_sweet" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_30px">
+
+            <LinearLayout
+                android:id="@+id/head_icon_deliver"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/space_90px"
+                    android:layout_height="@dimen/space_90px"
+                    android:src="@mipmap/head_icon_deliver" />
+
+                <TextView
+                    style="@style/head_icon_text_style"
+                    android:text="@string/head_icon_deliver" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/head_icon_simple"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/space_90px"
+                    android:layout_height="@dimen/space_90px"
+                    android:src="@mipmap/head_icon_ham" />
+
+                <TextView
+                    style="@style/head_icon_text_style"
+                    android:text="@string/head_icon_ham" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/head_icon_prefer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/space_90px"
+                    android:layout_height="@dimen/space_90px"
+                    android:src="@mipmap/head_icon_new" />
+
+                <TextView
+                    style="@style/head_icon_text_style"
+                    android:text="@string/head_icon_prefer" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/head_icon_fruit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/space_90px"
+                    android:layout_height="@dimen/space_90px"
+                    android:src="@mipmap/head_icon_fruit" />
+
+                <TextView
+                    style="@style/head_icon_text_style"
+                    android:text="@string/head_icon_fruit" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/head_icon_cook"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/space_90px"
+                    android:layout_height="@dimen/space_90px"
+                    android:src="@mipmap/head_icon_cook" />
+
+                <TextView
+                    style="@style/head_icon_text_style"
+                    android:text="@string/head_icon_cook" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="@dimen/space_25px"
+        android:layout_marginBottom="@dimen/space_25px"
+        android:orientation="horizontal"
+        android:background="@color/white"
+        android:padding="@dimen/space_20px"
+        android:layout_width="match_parent"
+        android:layout_height="250dp">
+
+        <LinearLayout
+            android:layout_weight="4"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:src="@mipmap/head_one_iv"
+                android:id="@+id/head_one_iv"
+                android:scaleType="fitXY"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_marginLeft="@dimen/space_10px"
+            android:layout_weight="3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_weight="1"
+                android:src="@mipmap/head_two_iv"
+                android:id="@+id/head_two_iv"
+                android:scaleType="centerCrop"
+                android:layout_width="match_parent"
+                android:layout_height="0dp" />
+
+            <ImageView
+                android:layout_marginTop="@dimen/space_10px"
+                android:src="@mipmap/head_three_iv"
+                android:layout_weight="1"
+                android:id="@+id/head_three_iv"
+                android:scaleType="centerCrop"
+                android:layout_width="match_parent"
+                android:layout_height="0dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginLeft="@dimen/space_10px"
+            android:orientation="vertical"
+            android:layout_weight="3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/head_four_iv"
+                android:src="@mipmap/head_four_iv"
+                android:layout_weight="1"
+                android:scaleType="centerCrop"
+                android:layout_width="match_parent"
+                android:layout_height="0dp" />
+
+            <ImageView
+                android:id="@+id/head_five_iv"
+                android:layout_marginTop="@dimen/space_10px"
+                android:src="@mipmap/head_five_iv"
+                android:layout_weight="1"
+                android:scaleType="centerCrop"
+                android:layout_width="match_parent"
+                android:layout_height="0dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <View
+            android:layout_marginRight="@dimen/space_25px"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/recommend_res"
+            android:background="@color/text_color_grey"
+            android:layout_width="@dimen/space_45px"
+            android:layout_height="0.8dp"/>
+
+        <View
+            android:layout_centerVertical="true"
+            android:layout_marginRight="19px"
+            android:layout_toLeftOf="@+id/recommend_res"
+            android:background="@drawable/grey_oval"
+            android:layout_width="1.2dp"
+            android:layout_height="1.2dp"/>
+
+        <TextView
+            android:layout_marginTop="@dimen/space_35px"
+            android:textStyle="bold"
+            android:id="@+id/recommend_res"
+            android:layout_centerInParent="true"
+            android:textColor="@color/black"
+            android:textSize="@dimen/space_30px"
+            android:text="@string/recommend_res"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="19px"
+            android:layout_toRightOf="@+id/recommend_res"
+            android:background="@drawable/grey_oval"
+            android:layout_width="1.2dp"
+            android:layout_height="1.2dp"/>
+
+        <View
+            android:layout_marginLeft="@dimen/space_25px"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/recommend_res"
+            android:background="@color/text_color_grey"
+            android:layout_width="@dimen/space_45px"
+            android:layout_height="0.8dp"/>
+
+        <View
+            android:layout_below="@+id/recommend_res"
+            android:layout_marginTop="@dimen/space_35px"
+            android:background="@color/grey_divider"
+            android:layout_width="match_parent"
+            android:layout_height="0.3dp"/>
+
+    </RelativeLayout>
+
+
+</LinearLayout>

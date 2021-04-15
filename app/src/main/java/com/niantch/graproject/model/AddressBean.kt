@@ -10,7 +10,7 @@ import java.io.Serializable
  * @datetime:  2021
  * @desc:
  */
-data class AddressModel(
+data class AddressBean(
     var id: Int = 0,
     @SerializedName("buyer_id")
     var user_id: Int = 0,

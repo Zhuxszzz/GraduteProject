@@ -10,7 +10,7 @@ import androidx.fragment.app.FragmentPagerAdapter
  * @datetime:  2021
  * @desc:
  */
-class TabFragmentAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm, BEHAVIOR_SET_USER_VISIBLE_HINT) {
+class TabFragmentAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
     var fragments = ArrayList<Fragment>()
     var titles = ArrayList<String>()
     override fun getItem(position: Int): Fragment {

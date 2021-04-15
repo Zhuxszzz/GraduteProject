@@ -10,10 +10,10 @@ import java.io.Serializable
  * @datetime:  2021
  * @desc:
  */
-data class ResBuyItemModel(
+data class ResBuyItemNum(
     var resId: String? = null,
 
-    var resName: String? = null,
+    var resName: String = "",
     //多少钱起送
     var resDeliverMoney: Int = 0,
     //配送费
@@ -30,11 +30,11 @@ data class ResBuyItemModel(
     var buyNum: Int = 0,
 
     @SerializedName("gs_name")
-    var itemName: String? = null,
+    var itemName: String = "",
 
     @SerializedName("gs_newprice")
     var itemPrice: Double = 0.0,
 
     @SerializedName("gs_pic")
-    var itemImg: String? = null
+    var itemImg: String = ""
 ) : DataSupport(), Serializable

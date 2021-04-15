@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit
  */
 object HttpUtil {
     const val SERVER_HOST = "server_host"
-    var HOME_PATH = "http://45.78.12.159/restaurant/index.php"
+    var HOME_PATH = "http://120.79.31.221:8888"
 
     init {
         val serverHost = PreferenceManager.getDefaultSharedPreferences(GlobalContextUtil.globalContext!!).getString(SERVER_HOST, "")
@@ -53,7 +53,6 @@ object HttpUtil {
 
     private val MEDIA_TYPE_IMAGE: MediaType = MediaType.parse("image/*")
 
-    private fun HttpUtil() {}
 
     private object SingHolder {
         val okHttpClient: OkHttpClient = OkHttpClient.Builder()
@@ -86,7 +85,7 @@ object HttpUtil {
         SingHolder.okHttpClient.newCall(request).enqueue(callback)
     }
 
-    fun upLoadImgsRequest(address: String?, hashMap: HashMap<String?, String?>, imgUrls: List<String?>?, callback: Callback?) {
+    fun upLoadImgsRequest(address: String?, hashMap: HashMap<String, String>, imgUrls: List<String?>?, callback: Callback?) {
         val builder: MultipartBody.Builder = MultipartBody.Builder().setType(MultipartBody.FORM)
         if (imgUrls != null) {
             for (i in imgUrls.indices) {

@@ -16,7 +16,7 @@ import java.net.URL
  * author: niantchzhu
  * date: 2021
  */
-object FileStorage {
+class FileStorage {
     private var cropIconDir: File? = null
     private var iconDir: File? = null
 
@@ -35,7 +35,7 @@ object FileStorage {
         }
     }
 
-    fun createCropFile(): File? {
+    fun createCropFile(): File {
         var fileName = ""
         if (cropIconDir != null) {
             fileName = CommonUtils.generateUUID().toString() + ".png"
@@ -43,7 +43,7 @@ object FileStorage {
         return File(cropIconDir, fileName)
     }
 
-    fun createIconFile(): File? {
+    fun createIconFile(): File {
         var fileName = ""
         if (iconDir != null) {
             fileName = CommonUtils.generateUUID().toString() + ".png"

@@ -11,7 +11,7 @@ import java.io.Serializable
  * @datetime:  2021
  * @desc:
  */
-data class ResDetailModel(
+data class ResDetailBean(
     //存到本地数据库中都要设置id
     val id: Int = 0,
 
@@ -64,5 +64,5 @@ data class ResDetailModel(
 
     //减价
     @SerializedName("discount_list")
-    var discountList: List<DiscountModel>? = null
+    var discountList: List<DiscountBean>? = null
 ) : DataSupport(), Serializable
