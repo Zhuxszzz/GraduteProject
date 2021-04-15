@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName
  * @datetime:  2021
  * @desc:
  */
-data class GoodsCategoryBean(
+data class GoodsCategoryModel(
     @SerializedName("category_id")
     var categoryId: Int = 0,
     @SerializedName("category_name")

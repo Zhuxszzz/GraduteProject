@@ -65,7 +65,7 @@ class ResActivity : AppCompatActivity(), View.OnClickListener {
     private var totalMoney = 0.0
 
     private var goodsListModel: GoodListModel? = null
-    private var categoryBeanList: List<GoodsCategoryBean>? = null
+    private var categoryModelList: List<GoodsCategoryModel>? = null
 
     private var adapter: TabFragmentAdapter? = null
     private var anim_mask_layout //动画层
@@ -163,10 +163,10 @@ class ResActivity : AppCompatActivity(), View.OnClickListener {
 
             @Throws(IOException::class)
             override fun onResponse(call: Call, response: Response) {
-                categoryBeanList = Gson().fromJson<List<GoodsCategoryBean>>(response.body().string(), object : TypeToken<List<GoodsCategoryBean?>?>() {}.type)
+                categoryModelList = Gson().fromJson<List<GoodsCategoryModel>>(response.body().string(), object : TypeToken<List<GoodsCategoryModel?>?>() {}.type)
                 runOnUiThread {
                     try {
-                        goodsListModel?.goodsCategoryList = categoryBeanList
+                        goodsListModel?.goodsCategoryList = categoryModelList
                         goodsListModel?.resName = resName
                         goodsListModel?.resId = resId
                         binding.progressBar.visibility = View.GONE
