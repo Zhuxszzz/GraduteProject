@@ -18,7 +18,8 @@
                 android:orientation="vertical">
             <!--        用户头像layout-->
             <ImageView
-                    android:layout_margin="10dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="@dimen/dimen_20dp"
                     android:id="@+id/iv_user_thumbnial"
                     android:layout_width="80dp"
                     android:layout_height="80dp"

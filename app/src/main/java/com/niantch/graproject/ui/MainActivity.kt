@@ -2,10 +2,15 @@ package com.niantch.graproject.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.service.autofill.Dataset
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import com.niantch.graproject.adapter.TabFragmentAdapter
 import com.niantch.graproject.databinding.ActivityMainBinding
 import com.niantch.graproject.model.ShopDetailModel
+import com.niantch.graproject.viewmodel.UserViewModel
+import org.litepal.crud.DataSupport
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,6 +33,10 @@ class MainActivity : AppCompatActivity() {
 //            startActivityForResult(intent, ACTIVITY_CODE)
 //        }
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
     }
 
     private fun initFragment() {

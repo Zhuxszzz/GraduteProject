@@ -9,10 +9,10 @@ import java.io.Serializable
  */
 data class GoodsBuyCategoryNum(var id: Int = 0,
 
-                               val resId //商店id
-                         : String? = null,
+                               var resId //商店id
+                               : String? = null,
 
-                               val categoryId //范畴id
-                         : String? = null,
+                               var categoryId //范畴id
+                               : String? = null,
 
-                               val buyNum: Int = 0) : DataSupport(), Serializable
+                               var buyNum: Int = 0) : DataSupport(), Serializable

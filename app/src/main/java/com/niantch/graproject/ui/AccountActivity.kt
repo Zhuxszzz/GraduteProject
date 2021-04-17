@@ -51,6 +51,7 @@ class AccountActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         super.onCreate(savedInstanceState, persistentState)
         binding = ActivityAccountBinding.inflate(layoutInflater)
+        setContentView(binding.root)
     }
 
     override fun onStart() {
@@ -88,7 +89,9 @@ class AccountActivity: AppCompatActivity() {
 
             @Throws(IOException::class)
             override fun onResponse(call: Call, response: Response) {
-                discountModelList = Gson().fromJson<List<DiscountModel>>(response.body().string(), object : TypeToken<List<DiscountModel?>?>() {}.type) as MutableList<DiscountModel>?
+                var responseText = response.body().string()
+                responseText = HttpUtil.requireData(responseText)
+                discountModelList = Gson().fromJson<List<DiscountModel>>(responseText, object : TypeToken<List<DiscountModel?>?>() {}.type) as MutableList<DiscountModel>?
                 for (discountBean in discountModelList!!) {
                     if (allMoney >= discountBean.filledVal) {
                         reduceMoney = discountBean.reduceVal

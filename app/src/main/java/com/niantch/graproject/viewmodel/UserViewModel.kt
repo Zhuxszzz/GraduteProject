@@ -15,12 +15,15 @@ class UserViewModel: ViewModel() {
     val userLiveData = MutableLiveData<UserModel?>()
 
     fun initUser() {
-        val userList = DataSupport.findAll(UserModel::class.java)
-        if (userList.isNullOrEmpty()) {
-            userLiveData.value = null
-        } else {
-            userLiveData.value = userList[0]
-        }
+        val user = UserModel(0,1, "Niantch", "https://ftp.bmp.ovh/imgs/2021/04/2637c47b0071dcd7.jpeg","13545667562","112233", 1)
+//        val userList = DataSupport.findAll(UserModel::class.java)
+//        if (userList.isNullOrEmpty()) {
+//            userLiveData.value = null
+//        } else {
+//            userLiveData.value = userList[0]
+//        }
+        user.save()
+        userLiveData.postValue(user)
     }
 
     fun doOUserLogout() {

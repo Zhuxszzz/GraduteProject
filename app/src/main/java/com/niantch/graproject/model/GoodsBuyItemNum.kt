@@ -37,4 +37,5 @@ data class GoodsBuyItemNum(
 
     @SerializedName("gs_pic")
     var itemImg: String = ""
+
 ) : DataSupport(), Serializable

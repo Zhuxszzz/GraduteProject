@@ -49,7 +49,7 @@ class ClassifyResActivityAdapter(var mContext: Context?,var homeRecShopDetailMod
         //店名
         holder.one_fragment_content_item_name.text = homeRecShopDetailModelList!![position].resName
         //评分
-        holder.one_fragment_star.rating = homeRecShopDetailModelList!![position].resStar
+        holder.one_fragment_star.rating = homeRecShopDetailModelList!![position].resStar.toFloat()
         holder.one_fragment_score.text = homeRecShopDetailModelList!![position].resStar.toString() + ""
         //月售订单
         var orderNum =

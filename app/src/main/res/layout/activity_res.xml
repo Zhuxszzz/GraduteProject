@@ -6,7 +6,9 @@
         android:layout_height="match_parent"
         android:layout_width="match_parent">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/activity_main"
             android:fitsSystemWindows="true"
             android:background="@color/white"
@@ -53,9 +55,10 @@
                             android:id="@+id/res_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/res_img"
+                            android:layout_below="@id/res_img"
                             android:layout_marginTop="5dp"
                             android:gravity="center"
+                            android:text="TestStore"
                             android:textColor="@android:color/black"
                             android:textSize="20sp"
                             android:textStyle="bold" />
@@ -70,7 +73,6 @@
                             android:layout_marginTop="10dp">
 
                         <RatingBar
-                                android:visibility="gone"
                                 android:id="@+id/res_star"
                                 android:numStars="5"
                                 style="@style/one_fragment_rating_style"
@@ -83,6 +85,7 @@
                                 android:textColor="@color/res_detail_month_order"
                                 android:layout_marginLeft="@dimen/space_10px"
                                 android:textSize="@dimen/one_fragment_score_num"
+                                android:text="4.5"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content" />
 
@@ -93,6 +96,7 @@
                                 android:layout_marginLeft="15dp"
                                 android:id="@+id/res_order_num"
                                 android:layout_width="wrap_content"
+                                android:text="300"
                                 android:layout_height="wrap_content" />
 
                         <TextView
@@ -100,6 +104,7 @@
                                 android:textColor="@color/res_detail_month_order"
                                 android:textSize="@dimen/one_fragment_score_num"
                                 android:layout_width="wrap_content"
+                                android:text="220000"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="15dp" />
 
@@ -119,7 +124,7 @@
                             android:layout_height="wrap_content" />
 
                     <RelativeLayout
-                            android:visibility="visible"
+                            android:visibility="gone"
                             android:paddingLeft="35dp"
                             android:paddingRight="35dp"
                             android:layout_centerInParent="true"
@@ -137,7 +142,6 @@
 
                             <LinearLayout
                                     android:id="@+id/res_reduce_container"
-                                    android:visibility="gone"
                                     android:layout_marginTop="@dimen/space_15px"
                                     android:gravity="center"
                                     android:layout_width="wrap_content"
@@ -169,7 +173,6 @@
                         <TextView
                                 android:id="@+id/res_special_num"
                                 android:includeFontPadding="false"
-                                android:visibility="gone"
                                 android:layout_alignParentRight="true"
                                 android:layout_marginTop="16px"
                                 android:text="3个优惠"
@@ -181,7 +184,7 @@
 
                 </RelativeLayout>
 
-                <LinearLayout
+                <androidx.appcompat.widget.Toolbar
                         android:layout_width="match_parent"
                         android:layout_height="?attr/actionBarSize"
                         app:contentInsetStart="0dp"
@@ -223,12 +226,12 @@
                                         android:src="@mipmap/icon_search"
                                         android:layout_width="17dp"
                                         android:layout_height="17dp"
-                                        app:tint="@color/black_99" />
+                                        app:tint="@color/color_999" />
 
                                 <TextView
                                         android:gravity="center"
-                                        android:layout_toRightOf="@id/search"
-                                        android:textColor="@color/black_99"
+                                        android:layout_toRightOf="@+id/search"
+                                        android:textColor="@color/color_999"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center"
@@ -250,9 +253,10 @@
 
                     </LinearLayout>
 
-                </LinearLayout>
+                </androidx.appcompat.widget.Toolbar>
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
+
 
             <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tab_layout"

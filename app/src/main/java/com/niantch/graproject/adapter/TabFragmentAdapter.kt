@@ -17,6 +17,7 @@ class TabFragmentAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm, BEHAVIO
         return fragments[position]
     }
 
+
     override fun getCount(): Int {
         return fragments.size
     }

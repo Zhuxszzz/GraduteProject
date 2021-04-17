@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName
  * @datetime:  2021
  * @desc:
  */
-data class GoodItemModel(
+data class GoodsItemModel(
     var id: Int = 0,//此id就是categoryId，是代码中设置的GoodsCategoryBean中的此id就是categoryId,不是再次通过server端取到的
 
     @SerializedName("category_id")
@@ -36,6 +36,6 @@ data class GoodItemModel(
     var goodComment: Int = 0,
 
     @SerializedName("gs_pack_money")
-    var goodPackageMoney: Double = 0.0,
+    var goodPackageMoney: Float = 0.0f,
     var buyNum: Int = 0//代码中设置的，不是server中取到的
 )

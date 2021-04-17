@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName
  * @datetime:  2021
  * @desc:
  */
-data class GoodListModel(
+data class GoodsListModel(
     //商店id
     @SerializedName("shop_id")
     var resId: Int = 0,

@@ -81,23 +81,21 @@
                     android:background="@color/grey_divider"
                     android:layout_width="match_parent"
                     android:layout_height="0.3dp"/>
-
+            <include
+                    android:id="@+id/head_view"
+                    layout="@layout/one_fragemnt_head_item"/>
             <androidx.recyclerview.widget.RecyclerView
+                    android:background="@color/white"
                     android:id="@+id/one_fragment_rv"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
+<!--            <include layout="@layout/one_fragment_content_item"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_width="match_parent" />-->
 
         </LinearLayout>
 
-        <com.scwang.smartrefresh.layout.footer.ClassicsFooter
-                android:id="@+id/one_fragment_refresh_footer"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"/>
-
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
-    <include layout="@layout/one_fragment_empty_view"
-            android:visibility="gone"
-            android:id="@+id/empty_view"/>
 
 </RelativeLayout>

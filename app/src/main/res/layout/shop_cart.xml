@@ -5,7 +5,6 @@
     android:layout_alignParentBottom="true"
     android:layout_gravity="bottom"
     android:background="@color/shop_cart_bg"
-    android:id="@+id/shop_cart_main"
     android:clipChildren="false"
     android:orientation="horizontal"
     android:paddingLeft="15dp">

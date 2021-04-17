@@ -2,8 +2,12 @@ package com.niantch.graproject.utils
 
 import android.text.TextUtils
 import android.preference.PreferenceManager
+import android.util.Log
+import com.google.gson.JsonParser
+import com.niantch.graproject.NetModel
 import okhttp3.Request
 import okhttp3.*
+import org.json.JSONObject
 import java.io.File
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -13,6 +17,7 @@ import java.util.concurrent.TimeUnit
  * date: 2021
  */
 object HttpUtil {
+    const val TAG = "HttpUtil"
     const val SERVER_HOST = "server_host"
     var HOME_PATH = "http://120.79.31.221:8888"
 
@@ -60,13 +65,6 @@ object HttpUtil {
                 .build()
     }
 
-    fun sendOkHttpGetRequest(address: String?, callback: Callback?) {
-        val request: Request = Request.Builder()
-                .url(address)
-                .build()
-        SingHolder.okHttpClient.newCall(request).enqueue(callback)
-    }
-
     //第三个方法可以代替第二个方法
     fun sendOkHttpPostRequest(address: String?, hashMap: HashMap<String, String?>, callback: Callback?) {
         val builder: FormBody.Builder = FormBody.Builder()
@@ -109,6 +107,13 @@ object HttpUtil {
                 .post(builder.build()) //添加请求体
                 .build()
         SingHolder.okHttpClient.newCall(request).enqueue(callback)
+    }
+
+
+    fun requireData (json : String): String? {
+        val jsonObj = JsonParser().parse(json)
+        Log.e(TAG, jsonObj.asString)
+        return jsonObj.asString
     }
 
 

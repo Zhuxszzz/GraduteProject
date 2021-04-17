@@ -62,7 +62,8 @@ class CouponActivity: AppCompatActivity(R.layout.activity_coupon) {
 
                 @Throws(IOException::class)
                 override fun onResponse(call: Call, response: Response) {
-                    val responseText = response.body().string()
+                    var responseText = response.body().string()
+                    responseText = HttpUtil.requireData(responseText)
                     list?.clear()
                     list?.addAll(Gson().fromJson<List<CouponModel>>(responseText, object : TypeToken<List<CouponModel?>?>() {}.type))
                     adapter = CouponAdapter(allMoney, list!!)

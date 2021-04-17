@@ -23,6 +23,7 @@ object ImageUtil {
                 .into(imageView)
     }
 
+    @JvmStatic
     fun load(
             context: Context,
             res: Any?,

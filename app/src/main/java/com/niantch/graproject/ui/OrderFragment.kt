@@ -86,7 +86,8 @@ class OrderFragment: Fragment() {
 
                             @Throws(IOException::class)
                             override fun onResponse(call: Call, response: Response) {
-                                val responseText = response.body().string()
+                                var responseText = response.body().string()
+                                responseText = HttpUtil.requireData(responseText)
                                 activity!!.runOnUiThread {
                                     try {
                                         val jsonObject = JSONObject(responseText)

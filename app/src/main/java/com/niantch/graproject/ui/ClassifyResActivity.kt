@@ -9,6 +9,8 @@ import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.niantch.graproject.R
 import com.niantch.graproject.adapter.ClassifyResActivityAdapter
 import com.niantch.graproject.adapter.MultipleOrderPopWinAdapter
@@ -22,6 +24,7 @@ import okhttp3.Response
 import org.litepal.crud.DataSupport
 import java.io.IOException
 import java.util.*
+import kotlin.collections.ArrayList
 
 class ClassifyResActivity: AppCompatActivity(), View.OnClickListener {
 
@@ -208,14 +211,15 @@ class ClassifyResActivity: AppCompatActivity(), View.OnClickListener {
                 @Throws(IOException::class)
                 override fun onResponse(call: Call?, response: Response) {
                     list!!.clear()
-                    // TODO: 4/7/21  add mockked data
-//                    list!!.addAll(
-//                        (Gson().fromJson(
-//                            response.body().string(),
-//                            object :
-//                                TypeToken<List<ResDetailModel?>?>() {}.type
-//                        ) as List<*>?)!!
-//                    )
+                    var responseText = response.body().string()
+                    responseText = HttpUtil.requireData(responseText)
+                    list!!.addAll(
+                        (Gson().fromJson(
+                            responseText,
+                            object :
+                                TypeToken<ArrayList<ShopDetailModel?>?>() {}.type
+                        ) as List<ShopDetailModel>?)!!
+                    )
                     runOnUiThread { //请求完数据在UI线程更新ui
                         binding.firstLoad.visibility = View.GONE
                         if (list!!.size == 0 || list == null) {

@@ -31,8 +31,8 @@ data class ShopDetailModel(
     var resName: String? = null,
 
     //星级
-    @SerializedName("eval_decription")
-    var resStar: Float = 0f,
+    @SerializedName("eval_description")
+    var resStar: Float = 4.0f,
 
     //月售多少订单,应该是在订单表中查询的订单数
     @SerializedName("order_num")

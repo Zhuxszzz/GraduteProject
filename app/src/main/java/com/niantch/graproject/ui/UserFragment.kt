@@ -113,9 +113,9 @@ class UserFragment : Fragment(R.layout.user_fragment) {
         binding.tvSignMask.visibility = View.GONE
         binding.logOut.visibility = View.VISIBLE
         if (File(PreferenceManager.getDefaultSharedPreferences(activity).getString(bean.userId.toString() + "", "")).exists()) {
-            ImageUtil.load(activity!!, PreferenceManager.getDefaultSharedPreferences(activity).getString(bean.userId.toString() + "", ""), binding.ivUserThumbnial, ImageUtil.REQUEST_OPTIONS)
+            ImageUtil.load(activity!!, PreferenceManager.getDefaultSharedPreferences(activity).getString(bean.userImg.toString() + "", ""), binding.ivUserThumbnial, ImageUtil.REQUEST_OPTIONS)
         } else {
-            ImageUtil.load(activity!!, bean.userId, binding.ivUserThumbnial, ImageUtil.REQUEST_OPTIONS)
+            ImageUtil.load(activity!!, bean.userImg, binding.ivUserThumbnial, ImageUtil.REQUEST_OPTIONS)
         }
         binding.userNameText.text = bean.userName
         if (bean.userSex === 0) {
@@ -151,7 +151,8 @@ class UserFragment : Fragment(R.layout.user_fragment) {
 
                                 @Throws(IOException::class)
                                 override fun onResponse(call: Call, response: Response) {
-                                    val responseText = response.body().string()
+                                    var responseText = response.body().string()
+                                    responseText = HttpUtil.requireData(responseText)
                                     try {
                                         val jsonObject = JSONObject(responseText)
                                         val msg = jsonObject.getString("msg")
@@ -217,7 +218,8 @@ class UserFragment : Fragment(R.layout.user_fragment) {
 
                         @Throws(IOException::class)
                         override fun onResponse(call: Call, response: Response) {
-                            val responseText = response.body().string()
+                            var responseText = response.body().string()
+                            responseText = HttpUtil.requireData(responseText)
                             try {
                                 val jsonObject = JSONObject(responseText)
                                 val msg = jsonObject.getString("msg")
@@ -387,7 +389,7 @@ class UserFragment : Fragment(R.layout.user_fragment) {
                 //将图片保存到MySql
                 progressBar?.setVisibility(View.VISIBLE)
                 val files: MutableList<String> = ArrayList()
-                files.add(imagePath!!)
+                files.add(imagePath)
                 val hashMap = HashMap<String, String>()
                 hashMap["user_id"] = PreferenceManager.getDefaultSharedPreferences(activity).getInt("user_id", -1).toString()
                 if (DataSupport.findAll(UserModel::class.java).get(0).userImg != null) {
@@ -421,7 +423,7 @@ class UserFragment : Fragment(R.layout.user_fragment) {
                         } catch (e: JSONException) {
                             Log.d(TAG, e.message)
                             activity!!.runOnUiThread {
-                                progressBar?.setVisibility(View.GONE)
+                                progressBar?.visibility = View.GONE
                                 Toast.makeText(activity, "上传头像失败!", Toast.LENGTH_SHORT).show()
                             }
                         }

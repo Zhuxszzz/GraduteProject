@@ -4,7 +4,6 @@ import android.app.Dialog
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.os.Process
 import android.text.TextUtils
 import android.util.Log
 import android.view.Gravity
@@ -12,10 +11,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.*
-import android.widget.*
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
+import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.viewpager.widget.ViewPager
+import androidx.lifecycle.Observer
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.niantch.graproject.R
@@ -24,50 +27,51 @@ import com.niantch.graproject.databinding.ActivityResBinding
 import com.niantch.graproject.event.MessageEvent
 import com.niantch.graproject.model.*
 import com.niantch.graproject.model.Constants.RES_DETAIL
+import com.niantch.graproject.utils.DataUtil
 import com.niantch.graproject.utils.FileStorage
-import com.niantch.graproject.utils.ImageUtil
 import com.niantch.graproject.utils.HttpUtil
+import com.niantch.graproject.utils.ImageUtil
+import com.niantch.graproject.viewmodel.ResViewModel
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.Response
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import org.json.JSONException
-import org.json.JSONObject
 import org.litepal.crud.DataSupport
 import java.io.IOException
 import java.text.DecimalFormat
-import java.util.*
 import kotlin.collections.ArrayList
 
 /**
  * author: niantchzhu
  * date: 2021
  */
-class ResActivity : AppCompatActivity(), View.OnClickListener {
+class ResActivity : AppCompatActivity(R.layout.activity_res), View.OnClickListener {
 
     companion object {
         val RES_ID = "res_id"
+        const val TAG = "ResActivity"
     }
+
     private lateinit var binding: ActivityResBinding
+    private val resViewModel: ResViewModel by viewModels { defaultViewModelProviderFactory }
     private var homeRecShopDetailModel: ShopDetailModel? = null
 
     //优惠总数
     private var specialNum = 0
 
     //fragment列表
-    private val mFragments: MutableList<Fragment> = ArrayList<Fragment>()
+    private val mFragments: ArrayList<Fragment> = ArrayList<Fragment>()
 
     //tab名的列表
-    private val mTitles: MutableList<String> = ArrayList()
+    private val mTitles: ArrayList<String> = ArrayList()
 
     private var totalMoney = 0.0
 
-    private var goodsListModel: GoodListModel? = null
-    private var categoryModelList: List<GoodsCategoryModel>? = null
+    private var goodsListModel: GoodsListModel? = null
+    private var categoryModelList: List<GoodsNetItem>? = null
 
-    private var adapter: TabFragmentAdapter? = null
     private var anim_mask_layout //动画层
             : ViewGroup? = null
 
@@ -83,14 +87,7 @@ class ResActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityResBinding.inflate(layoutInflater)
-        //        setTheme(R.style.AppTheme_Fullscreen);
-//        setStatusBarTransparent()
-        Log.d("process test", "main process :" + Process.myPid())
-        Log.d("process test", "main process current thread:" + Process.myTid())
-        Thread(Runnable {
-            Log.d("process test", "main process son thread:" + Process.myTid())
-            runOnUiThread { Log.d("process test", "main process main thread:" + Process.myTid()) }
-        }).start()
+        setContentView(binding.root)
     }
 
     fun initView() {
@@ -102,7 +99,7 @@ class ResActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     fun initData() {
-        goodsListModel = GoodListModel()
+        goodsListModel = GoodsListModel()
         val intent = intent
         homeRecShopDetailModel = intent.getSerializableExtra(RES_DETAIL) as ShopDetailModel
         if (homeRecShopDetailModel == null) {
@@ -111,34 +108,36 @@ class ResActivity : AppCompatActivity(), View.OnClickListener {
 
             //请求店铺信息
             binding.progressBar.visibility = View.VISIBLE
-            val hashMap = HashMap<String, String?>()
-            hashMap["shop_id"] = intent.getStringExtra(RES_ID)
-            HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH + HttpUtil.OBTAIN_SHOP_BY_ID, hashMap, object : Callback {
-                override fun onFailure(call: Call, e: IOException) {
-                    Log.d("homeRecResDetail fail", e.toString())
-                    runOnUiThread {
-                        Toast.makeText(this@ResActivity, "网络连接超时，请检查网络!", Toast.LENGTH_SHORT).show()
-                        binding.progressBar.visibility = View.GONE
-                    }
-                }
-
-                @Throws(IOException::class)
-                override fun onResponse(call: Call, response: Response) {
-                    val responseText = response.body().string()
-                    try {
-                        val jsonObject = JSONObject(responseText)
-                        val status = jsonObject.getInt("status")
-                        if (status == 1) {
-                            homeRecShopDetailModel = Gson().fromJson(jsonObject.getJSONObject("data").toString(), ShopDetailModel::class.java)
-                            runOnUiThread {
-                                setResDetail()
-                                requestResGoods()
-                            }
-                        }
-                    } catch (e: JSONException) {
-                    }
-                }
-            })
+            resViewModel.fetchShopsGoodsData(resId)
+//            val hashMap = HashMap<String, String?>()
+//            hashMap["shop_id"] = intent.getStringExtra(RES_ID)
+//            HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH + HttpUtil.OBTAIN_SHOP_BY_ID, hashMap, object : Callback {
+//                override fun onFailure(call: Call, e: IOException) {
+//                    Log.d("homeRecResDetail fail", e.toString())
+//                    runOnUiThread {
+//                        Toast.makeText(this@ResActivity, "网络连接超时，请检查网络!", Toast.LENGTH_SHORT).show()
+//                        binding.progressBar.visibility = View.GONE
+//                    }
+//                }
+//
+//                @Throws(IOException::class)
+//                override fun onResponse(call: Call, response: Response) {
+//                    var responseText = response.body().string()
+//                    responseText = HttpUtil.requireData(responseText)
+//                    try {
+//                        val jsonObject = JSONObject(responseText)
+//                        val status = jsonObject.getInt("status")
+//                        if (status == 1) {
+//                            homeRecShopDetailModel = Gson().fromJson(jsonObject.getJSONObject("data").toString(), ShopDetailModel::class.java)
+//                            runOnUiThread {
+//                                setResDetail()
+//                                requestResGoods()
+//                            }
+//                        }
+//                    } catch (e: JSONException) {
+//                    }
+//                }
+//            })
         } else {
             setResDetail()
             resId = homeRecShopDetailModel?.resId ?: 0
@@ -163,12 +162,12 @@ class ResActivity : AppCompatActivity(), View.OnClickListener {
 
             @Throws(IOException::class)
             override fun onResponse(call: Call, response: Response) {
-                categoryModelList = Gson().fromJson<List<GoodsCategoryModel>>(response.body().string(), object : TypeToken<List<GoodsCategoryModel?>?>() {}.type)
+                var responseText = response.body().string()
+                responseText = HttpUtil.requireData(responseText)
+                categoryModelList = Gson().fromJson<List<GoodsNetItem>>(responseText, object : TypeToken<List<GoodsNetItem?>?>() {}.type)
                 runOnUiThread {
                     try {
-                        goodsListModel?.goodsCategoryList = categoryModelList
-                        goodsListModel?.resName = resName
-                        goodsListModel?.resId = resId
+                        goodsListModel = DataUtil.getGoodListModel(categoryModelList as List<GoodsNetItem>)
                         binding.progressBar.visibility = View.GONE
                         setViewPager()
                     } catch (e: Exception) {
@@ -181,34 +180,16 @@ class ResActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun setViewPager() {
-        val goodsFragment = GoodsFragment()
-        val evaluateFragment = EvaluateFragment()
-        val resDetailFragment = ResDetailFragment()
-        mFragments.add(goodsFragment)
-        mFragments.add(evaluateFragment)
-        mFragments.add(resDetailFragment)
+        addFragment()
         mTitles.add(resources.getString(R.string.order))
         mTitles.add(resources.getString(R.string.evaluate))
         mTitles.add(resources.getString(R.string.restaurant))
-        adapter = TabFragmentAdapter(supportFragmentManager)
-        adapter?.fragments = mFragments as ArrayList<Fragment>
-        adapter?.titles = mTitles as ArrayList<String>
+        val adapter = TabFragmentAdapter(supportFragmentManager)
+        adapter.fragments = mFragments
+        adapter.titles = mTitles
         binding.vp.adapter = adapter
         binding.tabLayout.setupWithViewPager(binding.vp)
-        //设置tabLayout的下划线的宽度
-//        setTabIndicator(tabLayout,36,36);
-        binding.vp.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
-            override fun onPageSelected(position: Int) {
-                when (position) {
-                    0 -> binding.myShop.shopCartMain.visibility = View.VISIBLE
-                    1 -> binding.myShop.shopCartMain.visibility = View.GONE
-                    2 -> binding.myShop.shopCartMain.visibility = View.GONE
-                }
-            }
 
-            override fun onPageScrollStateChanged(state: Int) {}
-        })
     }
 
     override fun onClick(v: View) {
@@ -368,13 +349,16 @@ class ResActivity : AppCompatActivity(), View.OnClickListener {
         return view
     }
 
-    fun getGoodListModel(): GoodListModel? {
+    fun getGoodListModel(): GoodsListModel? {
         return goodsListModel
     }
 
     override fun onStart() {
         super.onStart()
         EventBus.getDefault().register(this)
+        initView()
+        initData()
+        initObserver()
     }
 
     override fun onStop() {
@@ -508,7 +492,7 @@ class ResActivity : AppCompatActivity(), View.OnClickListener {
         binding.resDeliverTime.text = businessDeliverTime
 
         //设置星星评分
-        val starNum: Float = homeRecShopDetailModel!!.resStar
+        val starNum: Float = homeRecShopDetailModel!!.resStar.toFloat()
         if (starNum > 0) {
             binding.resStar.rating = starNum
             binding.resScore.text = starNum.toString() + ""
@@ -520,6 +504,31 @@ class ResActivity : AppCompatActivity(), View.OnClickListener {
         if (!TextUtils.isEmpty(resDescription)) {
             binding.resDescription.text = resDescription
         }
+    }
+
+    fun addFragment() {
+        mFragments.add(GoodsFragment())
+        mFragments.add(EvaluateFragment())
+        mFragments.add(ResDetailFragment())
+    }
+
+    private fun initObserver() {
+        resViewModel.shopGoodsLiveData.observe(this, Observer {
+            if (it == null) {
+                Toast.makeText(this@ResActivity, "网络连接超时，请检查网络!", Toast.LENGTH_SHORT).show()
+                binding.progressBar.visibility = View.GONE
+            } else {
+                categoryModelList = it
+                try {
+                    goodsListModel = DataUtil.getGoodListModel(categoryModelList as List<GoodsNetItem>)
+                    binding.progressBar.visibility = View.GONE
+                    setViewPager()
+                } catch (e: java.lang.Exception) {
+                    Toast.makeText(this@ResActivity, "网络连接超时，请检查网络!", Toast.LENGTH_SHORT).show()
+                    binding.progressBar.visibility = View.GONE
+                }
+            }
+        })
     }
 
 }

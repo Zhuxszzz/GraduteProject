@@ -25,9 +25,9 @@
     <string name="bottom_tab_my">我的</string>
 
     <string name="head_icon_food">美食</string>
-    <string name="head_icon_one">公寓一楼</string>
-    <string name="head_icon_two">公寓二楼</string>
-    <string name="head_icon_three">公寓三楼</string>
+    <string name="head_icon_one">主食饱饱</string>
+    <string name="head_icon_two">薯条炸鸡</string>
+    <string name="head_icon_three">速食快餐</string>
 
     <string name="app_exit_notice">再按一次退出食堂订餐</string>
     <string name="search_flag">搜索商家、商品名称</string>
@@ -39,7 +39,7 @@
     <string name="head_icon_fruit">水果生鲜</string>
     <string name="head_icon_cook">家常菜</string>
 
-    <string name="one_fragment_content_item_name">稻童小鲜粥（麦收大厦店）</string>
+    <string name="one_fragment_content_item_name">稻童小鲜粥）</string>
     <string name="one_fragment_order_num">月售1216单</string>
 
     <string name="special">特</string>
