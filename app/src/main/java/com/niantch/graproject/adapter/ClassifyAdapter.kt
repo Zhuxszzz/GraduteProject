@@ -5,10 +5,6 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.RatingBar
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.niantch.graproject.R
 import com.niantch.graproject.databinding.OneFragmentContentItemBinding
@@ -17,7 +13,7 @@ import com.niantch.graproject.model.ShopDetailModel
 import com.niantch.graproject.ui.ResActivity
 import com.niantch.graproject.utils.ImageUtil
 
-class ClassifyResActivityAdapter(var mContext: Context?,var homeRecShopDetailModelList: List<ShopDetailModel>? ): RecyclerView.Adapter<ClassifyResActivityAdapter.ViewHolder>() {
+class ClassifyAdapter(var mContext: Context?, var homeRecShopDetailModelList: List<ShopDetailModel>? ): RecyclerView.Adapter<ClassifyAdapter.ViewHolder>() {
 
     override fun getItemCount(): Int {
         return homeRecShopDetailModelList!!.size
@@ -29,28 +25,28 @@ class ClassifyResActivityAdapter(var mContext: Context?,var homeRecShopDetailMod
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.one_fragment_item_reduce_container.visibility = View.GONE
+        holder.binding.oneFragmentItemReduceContainer.visibility = View.GONE
 
         //设置添加到购物车的数量，红点显示
         if (homeRecShopDetailModelList!![position].buyNum > 0) {
-            holder.one_content_item_buy_num.text = homeRecShopDetailModelList!![position].buyNum.toString() + ""
-            holder.one_content_item_buy_num.visibility = View.VISIBLE
+            holder.binding.oneContentItemBuyNum.text = homeRecShopDetailModelList!![position].buyNum.toString() + ""
+            holder.binding.oneContentItemBuyNum.visibility = View.VISIBLE
         } else {
-            holder.one_content_item_buy_num.visibility = View.GONE
+            holder.binding.oneContentItemBuyNum.visibility = View.GONE
         }
 
         //设置img
         ImageUtil.load(
             mContext!!,
             homeRecShopDetailModelList!![position].resImg,
-            holder.one_content_item_iv,
+            holder.binding.oneContentItemIv,
             ImageUtil.REQUEST_OPTIONS
         )
         //店名
-        holder.one_fragment_content_item_name.text = homeRecShopDetailModelList!![position].resName
+        holder.binding.oneFragmentContentItemName.text = homeRecShopDetailModelList!![position].resName
         //评分
-        holder.one_fragment_star.rating = homeRecShopDetailModelList!![position].resStar.toFloat()
-        holder.one_fragment_score.text = homeRecShopDetailModelList!![position].resStar.toString() + ""
+        holder.binding.oneFragmentStar.rating = homeRecShopDetailModelList!![position].resStar.toFloat()
+        holder.binding.oneFragmentScore.text = homeRecShopDetailModelList!![position].resStar.toString() + ""
         //月售订单
         var orderNum =
             mContext!!.resources.getString(R.string.res_month_sell_order)
@@ -58,7 +54,7 @@ class ClassifyResActivityAdapter(var mContext: Context?,var homeRecShopDetailMod
             orderNum,
             homeRecShopDetailModelList!![position].resOrderNum
         )
-        holder.one_fragment_order_num.text = orderNum
+        holder.binding.oneFragmentOrderNum.text = orderNum
 
         //起送
         var deliverMoney =
@@ -67,7 +63,7 @@ class ClassifyResActivityAdapter(var mContext: Context?,var homeRecShopDetailMod
             deliverMoney,
             homeRecShopDetailModelList!![position].resDeliverMoney
         )
-        holder.one_fragment_deliver.text = deliverMoney
+        holder.binding.oneFragmentDeliver.text = deliverMoney
 
         //配送费
         var extraMoney = mContext!!.resources.getString(R.string.res_extra_money)
@@ -75,8 +71,8 @@ class ClassifyResActivityAdapter(var mContext: Context?,var homeRecShopDetailMod
             extraMoney,
             homeRecShopDetailModelList!![position].resExtraMoney
         )
-        holder.one_fragment_extra.text = extraMoney
-        holder.one_fragment_address.text = homeRecShopDetailModelList!![position].resAddress
+        holder.binding.oneFragmentExtra.text = extraMoney
+        holder.binding.oneFragmentAddress.text = homeRecShopDetailModelList!![position].resAddress
         //配送时间
         var deliverTime =
             mContext!!.resources.getString(R.string.res_deliver_time)
@@ -84,13 +80,13 @@ class ClassifyResActivityAdapter(var mContext: Context?,var homeRecShopDetailMod
             deliverTime,
             homeRecShopDetailModelList!![position].resDeliverTime
         )
-        holder.one_fragment_deliver_time.text = deliverTime
+        holder.binding.oneFragmentDeliverTime.text = deliverTime
         if (homeRecShopDetailModelList!![position]
                 .discountList != null && homeRecShopDetailModelList!![position]
                         .discountList!!.isNotEmpty()
         ) {
-            holder.one_fragment_item_reduce_container.visibility = View.VISIBLE
-            holder.divider.visibility = View.VISIBLE
+            holder.binding.oneFragmentItemReduceContainer.visibility = View.VISIBLE
+            holder.binding.divider.visibility = View.VISIBLE
             val sb = StringBuffer()
             for (discountBean in homeRecShopDetailModelList!![position]
                 .discountList!!) {
@@ -107,10 +103,10 @@ class ClassifyResActivityAdapter(var mContext: Context?,var homeRecShopDetailMod
                     sb.append("减$reducePrice,")
                 }
             }
-            holder.one_fragment_item_reduce.text = sb.toString().substring(0, sb.length - 1)
+            holder.binding.oneFragmentItemReduce.text = sb.toString().substring(0, sb.length - 1)
         } else {
-            holder.divider.visibility = View.GONE
-            holder.one_fragment_item_reduce_container.visibility = View.GONE
+            holder.binding.divider.visibility = View.GONE
+            holder.binding.oneFragmentItemReduceContainer.visibility = View.GONE
         }
 
         //设置每个item的点击事件
@@ -122,19 +118,6 @@ class ClassifyResActivityAdapter(var mContext: Context?,var homeRecShopDetailMod
     }
 
     class ViewHolder(val binding: OneFragmentContentItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        var one_content_item_iv: ImageView = binding.oneContentItemIv
-        var one_content_item_buy_num: TextView = binding.oneContentItemBuyNum
-        var one_fragment_content_item_name: TextView = binding.oneFragmentContentItemName
-        var one_fragment_star: RatingBar = binding.oneFragmentStar
-        var one_fragment_score: TextView = binding.oneFragmentScore
-        var one_fragment_deliver: TextView = binding.oneFragmentDeliver
-        var one_fragment_order_num: TextView = binding.oneFragmentOrderNum
-        var one_fragment_extra: TextView = binding.oneFragmentExtra
-        var one_fragment_address: TextView = binding.oneFragmentAddress
-        var one_fragment_deliver_time: TextView = binding.oneFragmentDeliverTime
-        var one_fragment_item_reduce_container: LinearLayout = binding.oneFragmentItemReduceContainer
-        var one_fragment_item_reduce: TextView = binding.oneFragmentItemReduce
-        var divider: View = binding.divider
     }
 
 }

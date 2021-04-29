@@ -5,8 +5,10 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.niantch.graproject.databinding.OrderFragmentItemBinding
+import com.niantch.graproject.model.Constants
 import com.niantch.graproject.model.OrderModel
 import com.niantch.graproject.ui.ResActivity
 import com.niantch.graproject.utils.ImageUtil
@@ -35,7 +37,17 @@ class OrderFragmentAdapter(val context: Context, val orderList: List<OrderModel>
         holder.binding.orderFragmentItemResBuyTime.text = orderList[position].orderTime
         holder.binding.orderFragmentItemResItemPrice.text = "￥" + orderList[position].orderPrice
         holder.binding.orderFragmentItemResItemName.text = orderList[position].orderDescription
-
+        holder.binding.tvAddress.text = orderList[position].orderAddress ?: ""
+        holder.binding.orderFragmentItemResImg.setOnClickListener {
+            val intent = Intent(context, ResActivity::class.java)
+            intent.putExtra(Constants.RES_DETAIL, orderList[position].resId)
+            context.startActivity(intent)
+        }
+        holder.binding.orderFragmentItemResName.setOnClickListener {
+            val intent = Intent(context, ResActivity::class.java)
+            intent.putExtra(Constants.RES_DETAIL, orderList[position].resId)
+            context.startActivity(intent)
+        }
         when (orderList[position].orderState) {
             2 -> {
                 holder.binding.orderState.text = "商家待接单"
@@ -88,7 +100,18 @@ class OrderFragmentAdapter(val context: Context, val orderList: List<OrderModel>
     }
 
 
-    class ViewHolder(val binding: OrderFragmentItemBinding) : RecyclerView.ViewHolder(binding.root)
+    class ViewHolder(val binding: OrderFragmentItemBinding) : RecyclerView.ViewHolder(binding.root){
+        /**
+         * 示例用
+         */
+        var order_fragment_item_res_img = binding.orderFragmentItemResImg
+        var order_fragment_item_res_name  = binding.orderFragmentItemResName
+        var order_fragment_item_res_buy_time = binding.orderFragmentItemResBuyTime
+        var order_fragment_item_res_item_name = binding.orderFragmentItemResItemName
+        var order_fragment_item_res_item_price = binding.orderFragmentItemResItemPrice
+        var order_fragment_item_buy = binding.orderFragmentItemBuy
+        var order_state = binding.orderState
+    }
 
     interface OnItemBtnClickListener {
         fun onItemBtnClick(position: Int, state: Int)

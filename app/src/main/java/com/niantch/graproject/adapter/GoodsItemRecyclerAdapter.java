@@ -30,9 +30,6 @@ import java.util.List;
 import org.greenrobot.eventbus.EventBus;
 import org.litepal.crud.DataSupport;
 
-/**
- * Created by rjq on 2018/1/28.
- */
 
 public class GoodsItemRecyclerAdapter extends RecyclerView.Adapter<GoodsItemRecyclerAdapter.ViewHolder> {
     private List<GoodsItemModel> dataList;
@@ -57,6 +54,8 @@ public class GoodsItemRecyclerAdapter extends RecyclerView.Adapter<GoodsItemRecy
         mSectionLetters = getSectionLetters();
         mGoodsCategoryBuyNums = getBuyNums();
         setHasStableIds(true);
+        changeShopCart();
+
     }
 
     public void setShopCart(TextView shopCart) {
@@ -176,7 +175,7 @@ public class GoodsItemRecyclerAdapter extends RecyclerView.Adapter<GoodsItemRecy
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        final int resId = ((ResActivity)mContext).getResDetailModel().getResId();
+        final int resId = ((ResActivity)mContext).getResDetailModel().getShopId();
         final String resName = ((ResActivity)mContext).getResDetailModel().getResName();
         final int resDeliverMoney = ((ResActivity)mContext).getResDetailModel().getResDeliverMoney();
         final int resExtraMoney = ((ResActivity)mContext).getResDetailModel().getResExtraMoney();
@@ -207,58 +206,55 @@ public class GoodsItemRecyclerAdapter extends RecyclerView.Adapter<GoodsItemRecy
         changeShopCart();
 
         //加号按钮点击
-        holder.ivGoodsAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goodsNum[position]++;
-                selectGoods.add(dataList.get(position));
-                mGoodsCategoryBuyNums[dataList.get(position).getId()]++;
-                buyNum++;
-                totalPrice = totalPrice + dataList.get(position).getPrice() + dataList.get(position).getGoodPackageMoney();
-                if (goodsNum[position]<=1) {
-                    holder.ivGoodsMinus.setAnimation(getShowAnimation());
-                    holder.tvGoodsSelectNum.setAnimation(getShowAnimation());
-                    holder.ivGoodsMinus.setVisibility(View.VISIBLE);
-                    holder.tvGoodsSelectNum.setVisibility(View.VISIBLE);
-                }
-                startAnim(holder.ivGoodsAdd);
-                changeShopCart();
-                if(mOnShopCartGoodsChangeListener != null)
-                    mOnShopCartGoodsChangeListener.onNumChange();
-                isSelected(goodsNum[position], holder);
+        holder.ivGoodsAdd.setOnClickListener(v -> {
+            goodsNum[position]++;
+            selectGoods.add(dataList.get(position));
+            mGoodsCategoryBuyNums[dataList.get(position).getId()]++;
+            buyNum++;
+            totalPrice = totalPrice + dataList.get(position).getPrice() + dataList.get(position).getGoodPackageMoney();
+            if (goodsNum[position]<=1) {
+                holder.ivGoodsMinus.setAnimation(getShowAnimation());
+                holder.tvGoodsSelectNum.setAnimation(getShowAnimation());
+                holder.ivGoodsMinus.setVisibility(View.VISIBLE);
+                holder.tvGoodsSelectNum.setVisibility(View.VISIBLE);
+            }
+            startAnim(holder.ivGoodsAdd);
+            changeShopCart();
+            if(mOnShopCartGoodsChangeListener != null)
+                mOnShopCartGoodsChangeListener.onNumChange();
+            isSelected(goodsNum[position], holder);
 
-                //将状态保存到本地数据库
-                if (goodsNum[position] == 1){
-                    List<GoodsBuyCategoryNum> resBuyCategoryNumList = DataSupport
-                            .where("resId = ? and categoryId = ?",String.valueOf(resId),
-                            String.valueOf(dataList.get(position).getCategoryId())).find(GoodsBuyCategoryNum.class);
-                    if (resBuyCategoryNumList.size() == 0){
-                        DataUtil.add(String.valueOf(resId),String.valueOf(dataList.get(position).getCategoryId()),mGoodsCategoryBuyNums[dataList.get(position).getId()]);
-                    }else{
-                        GoodsBuyCategoryNum resBuyCategoryNum = new GoodsBuyCategoryNum();
-                        resBuyCategoryNum.setBuyNum(mGoodsCategoryBuyNums[dataList.get(position).getId()]);
-                        resBuyCategoryNum.updateAll("resId = ? and categoryId = ?", String.valueOf(resId),
-                                String.valueOf(dataList.get(position).getCategoryId()));
-                    }
-
-                    DataUtil.add(String.valueOf(resId),String.valueOf(dataList.get(position).getCategoryId()),String.valueOf(dataList.get(position).getGoodId()),
-                            goodsNum[position],dataList.get(position).getName(),dataList.get(position).getPrice(),dataList.get(position).getGoodsImgUrl(),
-                            resName,resDeliverMoney,resExtraMoney,dataList.get(position).getGoodPackageMoney());
-
-                }else if (goodsNum[position] > 1){
-                    GoodsBuyItemNum resBuyItemNum = new GoodsBuyItemNum();
-                    resBuyItemNum.setBuyNum(goodsNum[position]);
-                    resBuyItemNum.updateAll("resId = ? and categoryId = ? and goodId = ?", String.valueOf(resId),
-                            String.valueOf(dataList.get(position).getCategoryId()),String.valueOf(dataList.get(position).getGoodId()));
-
+            //将状态保存到本地数据库
+            if (goodsNum[position] == 1){
+                List<GoodsBuyCategoryNum> resBuyCategoryNumList = DataSupport
+                        .where("resId = ? and categoryId = ?",String.valueOf(resId),
+                        String.valueOf(dataList.get(position).getCategoryId())).find(GoodsBuyCategoryNum.class);
+                if (resBuyCategoryNumList.size() == 0){
+                    DataUtil.add(String.valueOf(resId),String.valueOf(dataList.get(position).getCategoryId()),mGoodsCategoryBuyNums[dataList.get(position).getId()]);
+                }else{
                     GoodsBuyCategoryNum resBuyCategoryNum = new GoodsBuyCategoryNum();
                     resBuyCategoryNum.setBuyNum(mGoodsCategoryBuyNums[dataList.get(position).getId()]);
                     resBuyCategoryNum.updateAll("resId = ? and categoryId = ?", String.valueOf(resId),
                             String.valueOf(dataList.get(position).getCategoryId()));
-
                 }
 
+                DataUtil.add(String.valueOf(resId),String.valueOf(dataList.get(position).getCategoryId()),String.valueOf(dataList.get(position).getGoodId()),
+                        goodsNum[position],dataList.get(position).getName(),dataList.get(position).getPrice(),dataList.get(position).getGoodsImgUrl(),
+                        resName,resDeliverMoney,resExtraMoney,dataList.get(position).getGoodPackageMoney());
+
+            }else if (goodsNum[position] > 1){
+                GoodsBuyItemNum resBuyItemNum = new GoodsBuyItemNum();
+                resBuyItemNum.setBuyNum(goodsNum[position]);
+                resBuyItemNum.updateAll("resId = ? and categoryId = ? and goodId = ?", String.valueOf(resId),
+                        String.valueOf(dataList.get(position).getCategoryId()),String.valueOf(dataList.get(position).getGoodId()));
+
+                GoodsBuyCategoryNum resBuyCategoryNum = new GoodsBuyCategoryNum();
+                resBuyCategoryNum.setBuyNum(mGoodsCategoryBuyNums[dataList.get(position).getId()]);
+                resBuyCategoryNum.updateAll("resId = ? and categoryId = ?", String.valueOf(resId),
+                        String.valueOf(dataList.get(position).getCategoryId()));
+
             }
+
         });
         //减号按钮点击
         holder.ivGoodsMinus.setOnClickListener(new View.OnClickListener() {

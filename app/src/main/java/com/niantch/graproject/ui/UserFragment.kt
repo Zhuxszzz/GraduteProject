@@ -1,5 +1,6 @@
 package com.niantch.graproject.ui
 
+import android.Manifest
 import android.annotation.TargetApi
 import android.app.Activity
 import android.app.AlertDialog
@@ -23,19 +24,22 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.niantch.graproject.R
+import com.niantch.graproject.adapter.AddressActivity
 import com.niantch.graproject.databinding.UserFragmentBinding
 import com.niantch.graproject.model.CouponModel
 import com.niantch.graproject.model.UserModel
+import com.niantch.graproject.utils.DataUtil
 import com.niantch.graproject.utils.FileStorage
-import com.niantch.graproject.utils.ImageUtil
 import com.niantch.graproject.utils.HttpUtil
+import com.niantch.graproject.utils.ImageUtil
+import com.niantch.graproject.utils.permission.PermissionListener
+import com.niantch.graproject.utils.permission.PermissionUtil
 import com.niantch.graproject.viewmodel.UserViewModel
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.Response
 import org.json.JSONException
 import org.json.JSONObject
-import org.litepal.crud.DataSupport
 import java.io.File
 import java.io.IOException
 
@@ -44,6 +48,7 @@ class UserFragment : Fragment(R.layout.user_fragment) {
     companion object {
         const val REQUEST_LOGIN = 5 //登录
     }
+
     lateinit var binding: UserFragmentBinding
     private val userViewModel: UserViewModel by activityViewModels()
     private val TAG = "UserFragment"
@@ -62,9 +67,12 @@ class UserFragment : Fragment(R.layout.user_fragment) {
             : Uri = Uri.EMPTY
     private var imagePath: String = ""
 
-    private var dialog: Dialog? =null
+    private var dialog: Dialog? = null
 
     private var userBean: UserModel? = null
+
+    lateinit var per: PermissionUtil
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -103,6 +111,11 @@ class UserFragment : Fragment(R.layout.user_fragment) {
         binding.logOut.setOnClickListener {
             userViewModel.doOUserLogout()
         }
+
+        binding.goodsAddress.setOnClickListener {
+            val intent = Intent(context, AddressActivity::class.java)
+            startActivityForResult(intent, AccountActivity.REQUEST_ADDRESS)
+        }
     }
 
     fun setUserInfo(bean: UserModel?) {
@@ -118,7 +131,7 @@ class UserFragment : Fragment(R.layout.user_fragment) {
             ImageUtil.load(activity!!, bean.userImg, binding.ivUserThumbnial, ImageUtil.REQUEST_OPTIONS)
         }
         binding.userNameText.text = bean.userName
-        if (bean.userSex === 0) {
+        if (bean.userSex == 0) {
             binding.userSexText.setText("女")
         } else {
             binding.userSexText.setText("男")
@@ -126,6 +139,7 @@ class UserFragment : Fragment(R.layout.user_fragment) {
         val phoneNumber: String = bean.userPhone!!.substring(0, 3) + "****" + bean.userPhone!!.substring(7, bean.userPhone!!.length)
         binding.userPhoneText.text = phoneNumber
         binding.alterUserPwd.text = "修改"
+        binding.userAddressText.text = DataUtil.getDefaultAddress()
     }
 
     private fun alterUserNameDialog() {
@@ -136,42 +150,17 @@ class UserFragment : Fragment(R.layout.user_fragment) {
                 .setPositiveButton(resources.getString(R.string.yes), DialogInterface.OnClickListener { _, _ ->
                     val input = edit.text.toString()
                     if (!TextUtils.isEmpty(input)) {
-                        if (userBean!=null) {
+                        if (userBean != null) {
                             //                                userBean.setUserName(input);
                             //                                userBean.save();
                             //                                将更改保存到远程数据库
                             progressBar?.visibility = View.VISIBLE
-                            val hash = HashMap<String, String?>()
-                            hash["user_id"] = java.lang.String.valueOf(userBean!!.userId)
-                            hash["user_name"] = input
-                            HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH + HttpUtil.SAVE_USER_NAME, hash, object : Callback {
-                                override fun onFailure(call: Call, e: IOException) {
-                                    Log.d("ThreeFragment", e.toString())
-                                }
+                            progressBar?.visibility = View.GONE
+                            binding.userNameText.text = input
+                            //将更改保存到本地数据库 ]
+                            userBean!!.userName = input
+                            userBean?.save()
 
-                                @Throws(IOException::class)
-                                override fun onResponse(call: Call, response: Response) {
-                                    var responseText = response.body().string()
-                                    responseText = HttpUtil.requireData(responseText)
-                                    try {
-                                        val jsonObject = JSONObject(responseText)
-                                        val msg = jsonObject.getString("msg")
-                                        val status = jsonObject.getInt("status")
-                                        activity!!.runOnUiThread {
-                                            Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show()
-                                            progressBar?.visibility = View.GONE
-                                            if (status != 0) {
-                                                binding.userNameText.text = input
-                                                //将更改保存到本地数据库 ]
-                                                userBean!!.userName = input
-                                                userBean?.save()
-                                            }
-                                        }
-                                    } catch (e: JSONException) {
-                                        activity!!.runOnUiThread { progressBar?.setVisibility(View.GONE) }
-                                    }
-                                }
-                            })
                         }
                     } else {
                         Toast.makeText(activity, resources.getString(R.string.user_name_not_empty), Toast.LENGTH_SHORT).show()
@@ -201,48 +190,15 @@ class UserFragment : Fragment(R.layout.user_fragment) {
                     val sex = rb.text.toString()
                     //                        userSexText.text = sex;
                     //将修改保存到本地数据库
-                    val list: List<UserModel> = DataSupport.findAll(UserModel::class.java)
-                    //将更改保存到远程数据库
-                    progressBar?.visibility = View.VISIBLE
-                    val hash = HashMap<String, String?>()
-                    hash["user_id"] = java.lang.String.valueOf(list[0].userId)
+                    val userBean = DataUtil.getCurrentUser()
+                    binding.userSexText.text = sex
+                    //保存到本地数据库
                     if (sex == "男") {
-                        hash["user_sex"] = 1.toString() + ""
+                        userBean?.userSex = 1
                     } else {
-                        hash["user_sex"] = 0.toString() + ""
+                        userBean?.userSex = 0
                     }
-                    HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH + HttpUtil.SAVE_USER_SEX, hash, object : Callback {
-                        override fun onFailure(call: Call, e: IOException) {
-                            Log.d("ThreeFragment", e.toString())
-                        }
-
-                        @Throws(IOException::class)
-                        override fun onResponse(call: Call, response: Response) {
-                            var responseText = response.body().string()
-                            responseText = HttpUtil.requireData(responseText)
-                            try {
-                                val jsonObject = JSONObject(responseText)
-                                val msg = jsonObject.getString("msg")
-                                val status = jsonObject.getInt("status")
-                                activity!!.runOnUiThread {
-                                    Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show()
-                                    progressBar?.visibility = View.GONE
-                                    if (status != 0) {
-                                        binding.userSexText.text = sex
-                                        //保存到本地数据库
-                                        val userBean: UserModel = list[0]
-                                        if (sex == "男") {
-                                            userBean.userSex = 1
-                                        } else {
-                                            userBean.userSex = 0
-                                        }
-                                        userBean.save()
-                                    }
-                                }
-                            } catch (e: JSONException) {
-                            }
-                        }
-                    })
+                    userBean?.save()
                 })
                 .setNegativeButton(resources.getString(R.string.cancel), null)
                 .show()
@@ -255,10 +211,42 @@ class UserFragment : Fragment(R.layout.user_fragment) {
         val tv1 = view.findViewById<View>(R.id.tx_1) as TextView
         val tv2 = view.findViewById<View>(R.id.tx_2) as TextView
         val tv3 = view.findViewById<View>(R.id.tx_3) as TextView
-//        tv1.setOnClickListener(this)
-//        tv2.setOnClickListener(this)
-//        tv3.setOnClickListener(this)
-        // TODO: 4/12/21
+        per = PermissionUtil(activity!!)
+
+        tv1.setOnClickListener {
+            dialog?.dismiss()
+            per.requestPermissions(arrayListOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE), object : PermissionListener {
+                override fun onGranted() {
+                    openCamera()
+                }
+
+                override fun onDenied(deniedPermission: List<String?>?) {
+                    val msg: String = PermissionUtil.deniedPermissionToMsg(deniedPermission)
+                    PermissionUtil.showDialog(activity, "在设置-应用-MidnightDinner-权限中开启 或 安全管家-应用管理-敏行中开启" + msg + "权限，以正常使用相机、录像等功能")
+                }
+
+                override fun onShouldShowRationale(deniedPermission: List<String?>?) {
+                    val msg: String = PermissionUtil.deniedPermissionToMsg(deniedPermission)
+                    PermissionUtil.showDialog(activity, "在设置-应用-MidnightDinner-权限中开启 或 安全管家-应用管理-MidnightDinner中开启" + msg + "权限，以正常使用相机、录像等功能")
+                }
+            })
+        }
+
+        tv2.setOnClickListener {
+            dialog?.dismiss()
+            per.requestPermissions(arrayListOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), object : PermissionListener {
+                override fun onGranted() {
+                    selectFromAlbum()
+                }
+
+                override fun onDenied(deniedPermission: List<String?>?) {}
+                override fun onShouldShowRationale(deniedPermission: List<String?>?) {
+                    val msg = PermissionUtil.deniedPermissionToMsg(deniedPermission)
+                    PermissionUtil.showDialog(activity, "在设置-应用-MidnightDinner-权限中开启 或 安全管家-应用管理-MidnightDinner中开启" + msg + "权限,以正常使用相册")
+                }
+            })
+        }
+        tv3.setOnClickListener { dialog?.dismiss() }
         //将布局设置给Dialog
         dialog?.setContentView(view)
         //获取当前Activity所在的窗体
@@ -392,8 +380,9 @@ class UserFragment : Fragment(R.layout.user_fragment) {
                 files.add(imagePath)
                 val hashMap = HashMap<String, String>()
                 hashMap["user_id"] = PreferenceManager.getDefaultSharedPreferences(activity).getInt("user_id", -1).toString()
-                if (DataSupport.findAll(UserModel::class.java).get(0).userImg != null) {
-                    hashMap["user_img"] = DataSupport.findAll(UserModel::class.java)[0].userImg ?: ""
+                if (DataUtil.getCurrentUser()?.userImg != null) {
+                    hashMap["user_img"] = DataUtil.getCurrentUser()?.userImg
+                            ?: ""
                 }
                 HttpUtil.upLoadImgsRequest(HttpUtil.HOME_PATH + HttpUtil.UPLOAD_IMG_API, hashMap, files, object : Callback {
                     override fun onFailure(call: Call, e: IOException) {
@@ -411,12 +400,11 @@ class UserFragment : Fragment(R.layout.user_fragment) {
                         try {
                             val jsonObject = JSONObject(responseText)
                             //将新上传的图片的服务器路径保存到用户信息中
-                            val list: List<UserModel> = DataSupport.findAll(UserModel::class.java)
-                            val userBean: UserModel = list[0]
-                            userBean.userImg = jsonObject["url"] as String
-                            userBean.save()
+                            val userBean: UserModel? = DataUtil.getCurrentUser()
+                            userBean?.userImg = jsonObject["url"] as String
+                            userBean?.save()
                             activity!!.runOnUiThread { //保存本地图片头像的路径
-                                PreferenceManager.getDefaultSharedPreferences(activity).edit().putString(userBean.userId.toString() + "", imagePath).commit()
+                                PreferenceManager.getDefaultSharedPreferences(activity).edit().putString(userBean?.userId.toString() + "", imagePath).commit()
                                 ImageUtil.load(activity!!, imagePath, binding.ivUserThumbnial, ImageUtil.REQUEST_OPTIONS)
                                 progressBar?.setVisibility(View.GONE)
                             }

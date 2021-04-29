@@ -10,10 +10,12 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.niantch.graproject.R
+import com.niantch.graproject.adapter.AddressActivity
 import com.niantch.graproject.adapter.HomePageAdapter
 import com.niantch.graproject.databinding.OneFragemntHeadItemBinding
 import com.niantch.graproject.databinding.OneFragmentBinding
 import com.niantch.graproject.model.ShopDetailModel
+import com.niantch.graproject.utils.DataUtil
 import com.niantch.graproject.viewmodel.ResViewModel
 
 /**
@@ -26,8 +28,7 @@ class HomePageFragment : Fragment(R.layout.one_fragment) {
         const val TAG = "HomePageFragment"
         const val RES_DETAIL = "res_detail"
         const val RES_TITLE = "res_title"
-        const val DELICIOUS = "美食"
-        const val ONE_FLOUR = "主食饱饱"
+        const val ONE_FLOUR = "杨国福"
         const val TWO_FLOUR = "薯条炸鸡"
         const val THREE_FLOUR = "速食快餐"
         const val SWEET = "甜品饮品"
@@ -59,6 +60,11 @@ class HomePageFragment : Fragment(R.layout.one_fragment) {
         resViewModel.fetchShopData()
     }
 
+    override fun onStart() {
+        super.onStart()
+        binding.homeAddress.text = DataUtil.getDefaultAddress()
+    }
+
     private fun initUI() {
         recycleHeadView = binding.headView
         val headFood = recycleHeadView.headIconFood
@@ -77,75 +83,69 @@ class HomePageFragment : Fragment(R.layout.one_fragment) {
             startActivity(intent)
         }
         headFood.setOnClickListener {
-            val intent = Intent(context, ClassifyResActivity::class.java)
-            intent.putExtra(RES_TITLE, resources.getString(R.string.head_icon_food))
-            intent.putExtra(ClassifyResActivity.RES_CLASSIFY, DELICIOUS)
+            val intent = Intent(context, SearchActivity::class.java)
+            intent.putExtra(RES_TITLE, "")
             startActivity(intent)
         }
 
         headOne.setOnClickListener {
-            val intent = Intent(context, ClassifyResActivity::class.java)
+            val intent = Intent(context, SearchActivity::class.java)
             intent.putExtra(RES_TITLE, resources.getString(R.string.head_icon_one))
-            intent.putExtra(ClassifyResActivity.RES_CLASSIFY, ONE_FLOUR)
             startActivity(intent)
         }
 
         headTwo.setOnClickListener {
-            val intent = Intent(context, ClassifyResActivity::class.java)
+            val intent = Intent(context, SearchActivity::class.java)
             intent.putExtra(RES_TITLE, resources.getString(R.string.head_icon_two))
-            intent.putExtra(ClassifyResActivity.RES_CLASSIFY, TWO_FLOUR)
             startActivity(intent)
         }
 
         headThree.setOnClickListener {
-            val intent = Intent(context, ClassifyResActivity::class.java)
+            val intent = Intent(context, SearchActivity::class.java)
             intent.putExtra(RES_TITLE, resources.getString(R.string.head_icon_three))
-            intent.putExtra(ClassifyResActivity.RES_CLASSIFY, THREE_FLOUR)
             startActivity(intent)
         }
 
         headSweet.setOnClickListener {
-            val intent = Intent(context, ClassifyResActivity::class.java)
+            val intent = Intent(context, SearchActivity::class.java)
             intent.putExtra(RES_TITLE, resources.getString(R.string.head_icon_sweet))
-            intent.putExtra(ClassifyResActivity.RES_CLASSIFY, SWEET)
             startActivity(intent)
         }
 
         headDeliver.setOnClickListener {
-            val intent = Intent(context, ClassifyResActivity::class.java)
+            val intent = Intent(context, SearchActivity::class.java)
             intent.putExtra(RES_TITLE, resources.getString(R.string.head_icon_deliver))
-            intent.putExtra(ClassifyResActivity.RES_CLASSIFY, DELIVER)
             startActivity(intent)
         }
 
         headSimple.setOnClickListener {
-            val intent = Intent(context, ClassifyResActivity::class.java)
+            val intent = Intent(context, SearchActivity::class.java)
             intent.putExtra(RES_TITLE, resources.getString(R.string.head_icon_ham))
-            intent.putExtra(ClassifyResActivity.RES_CLASSIFY, SIMPLE)
             startActivity(intent)
         }
 
         headPrefer.setOnClickListener {
-            val intent = Intent(context, ClassifyResActivity::class.java)
+            val intent = Intent(context, SearchActivity::class.java)
             intent.putExtra(RES_TITLE, resources.getString(R.string.head_icon_prefer))
-            intent.putExtra(ClassifyResActivity.RES_CLASSIFY, FAVOUR)
             startActivity(intent)
         }
 
         headFruit.setOnClickListener {
-            val intent = Intent(context, ClassifyResActivity::class.java)
+            val intent = Intent(context, SearchActivity::class.java)
             intent.putExtra(RES_TITLE, resources.getString(R.string.head_icon_fruit))
-            intent.putExtra(ClassifyResActivity.RES_CLASSIFY, FRUIT)
             startActivity(intent)
         }
 
         headCook.setOnClickListener {
-            val intent = Intent(context, ClassifyResActivity::class.java)
+            val intent = Intent(context, SearchActivity::class.java)
             intent.putExtra(RES_TITLE, resources.getString(R.string.head_icon_cook))
-            intent.putExtra(ClassifyResActivity.RES_CLASSIFY, COOK)
             startActivity(intent)
         }
-//        binding.oneFragmentSml.setOnRefreshListener { resViewModel.fetchMediaLiveData() }
+        binding.homeAddress.text = DataUtil.getDefaultAddress()
+        binding.homeAddress.setOnClickListener {
+            val intent = Intent(context, AddressActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun initRecycler() {
@@ -161,8 +161,8 @@ class HomePageFragment : Fragment(R.layout.one_fragment) {
         resViewModel.homePageRes.observe(viewLifecycleOwner, Observer {
             homeRecResDetailList.clear()
             homeRecResDetailList.addAll(it)
-//            binding.oneFragmentSml.finishRefresh()
             if (it.isNotEmpty()) {
+                DataUtil.updateShops(it)
                 adapter?.data = it
                 adapter?.notifyDataSetChanged()
             }

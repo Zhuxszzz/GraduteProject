@@ -4,6 +4,8 @@
         android:background="@color/white"
         android:layout_height="match_parent">
 
+    <include android:id="@+id/bar"
+            layout="@layout/common_bar_layout"/>
 
     <Button
             android:layout_centerInParent="true"
@@ -18,9 +20,9 @@
 
     <androidx.recyclerview.widget.RecyclerView
             android:visibility="visible"
+            android:layout_below="@id/bar"
             android:id="@+id/order_fragment_recycler"
             android:background="@color/grey_background"
-            android:layout_alignParentTop="true"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 

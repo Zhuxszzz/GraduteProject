@@ -13,6 +13,8 @@ import com.niantch.graproject.adapter.GoodsCategoryRecyclerAdapter
 import com.niantch.graproject.adapter.GoodsItemRecyclerAdapter
 import com.niantch.graproject.event.GoodsListEvent
 import com.niantch.graproject.model.*
+import dagger.hilt.EntryPoint
+import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -42,7 +44,6 @@ class GoodsFragment : Fragment() {
     private var mLinearLayoutManager: LinearLayoutManager? = null
 
     private var dataList: GoodsListModel? = null
-    private val homeRecResDetailBean: ShopDetailModel? = null
 
     private var root: View? = null
     override fun onCreate(@Nullable savedInstanceState: Bundle?) {
@@ -69,11 +70,6 @@ class GoodsFragment : Fragment() {
 
     private fun initData() {
         dataList = (activity as ResActivity?)?.getGoodListModel() //这是得到ResActivity中网络请求到的数据
-        //假数据
-//        homeRecResDetailBean = ((ResActivity)getActivity()).getResDetailBean();
-//        dataList = DataUtils.getGoodsListBean();
-//        dataList?.setResId(homeRecResDetailBean.resId);
-
         //从本地数据库中得到category的购买总数和每个category下item的购买数量,然后设置给请求得到的数据dataList
         val resBuyCategoryNumList: List<GoodsBuyCategoryNum> = DataSupport.where("resId = ?", java.lang.String.valueOf(dataList?.resId)).find(GoodsBuyCategoryNum::class.java)
         for (i in resBuyCategoryNumList.indices) {
@@ -123,13 +119,10 @@ class GoodsFragment : Fragment() {
         }
 
         mLinearLayoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-        goodsItemRecycler?.setLayoutManager(mLinearLayoutManager)
+        goodsItemRecycler?.layoutManager = mLinearLayoutManager
         goodsItemRecyclerAdapter = GoodsItemRecyclerAdapter(activity, goodsItemList, goodsCategoryList)
         goodsItemRecycler?.adapter = goodsItemRecyclerAdapter
         goodsItemRecycler?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-            }
 
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GRAProject</string>
+    <string name="app_name">MidnightDinner</string>
     <string name="default_location">请选择地址</string>
     <string name="click_to_sign">请点击登录</string>
     <string name="gold_money">金币</string>
@@ -29,7 +29,7 @@
     <string name="head_icon_two">薯条炸鸡</string>
     <string name="head_icon_three">速食快餐</string>
 
-    <string name="app_exit_notice">再按一次退出食堂订餐</string>
+    <string name="app_exit_notice">再按一次退出应用</string>
     <string name="search_flag">搜索商家、商品名称</string>
 
     <string name="head_icon_deliver">众包专送</string>

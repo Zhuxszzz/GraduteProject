@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import androidx.multidex.MultiDex
 import com.niantch.graproject.utils.GlobalContextUtil
+import dagger.hilt.android.HiltAndroidApp
 import org.litepal.LitePal
 
 class MidnightDinerApplication : Application() {

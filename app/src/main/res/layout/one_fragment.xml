@@ -40,7 +40,6 @@
                         android:layout_weight="1.3"
                         android:ellipsize="end"
                         android:id="@+id/home_address"
-                        android:drawableRight="@mipmap/down"
                         android:textSize="15sp"
                         android:layout_marginLeft="@dimen/space_20px"
                         android:gravity="center"

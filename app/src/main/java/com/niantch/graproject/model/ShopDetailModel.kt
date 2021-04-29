@@ -13,56 +13,56 @@ import java.io.Serializable
  */
 data class ShopDetailModel(
     //存到本地数据库中都要设置id
-    val id: Int = 0,
+        val id: Int = 0,
 
     //用户在该商店里加入购物车商品的数量，不是从server端获取的，是本地数据库中查到后，代码设置的
-    var buyNum: Int = 0,
+        var buyNum: Int = 0,
 
-    @SerializedName("shop_id")
-    var resId: Int = 0,
+        @SerializedName("shop_id")
+    var shopId: Int = 0,
 
-    @SerializedName("shop_logo")
+        @SerializedName("shop_logo")
     var resImg: String? = null,
 
-    @SerializedName("shop_pic")
+        @SerializedName("shop_pic")
     var shopPic: String? = null,
 
-    @SerializedName("shop_name")
+        @SerializedName("shop_name")
     var resName: String? = null,
 
     //星级
-    @SerializedName("eval_description")
+        @SerializedName("eval_description")
     var resStar: Float = 4.0f,
 
     //月售多少订单,应该是在订单表中查询的订单数
-    @SerializedName("order_num")
+        @SerializedName("order_num")
     var resOrderNum: Int = 0,
 
     //多少钱起送
-    @SerializedName("ship_money")
+        @SerializedName("ship_money")
     var resDeliverMoney: Int = 0,
 
     //配送费
-    @SerializedName("deliver_money")
+        @SerializedName("deliver_money")
     var resExtraMoney: Int = 0,
 
     //包装费
-    @SerializedName("pack_expense")
+        @SerializedName("pack_expense")
     var packExpense: Double = 0.0,
 
     //地址
-    @SerializedName("shop_addr")
+        @SerializedName("shop_addr")
     var resAddress: String? = null,
 
     //配送时间
-    @SerializedName("avg_delitime")
+        @SerializedName("avg_delitime")
     var resDeliverTime: Int = 0,
 
     //商家描述
-    @SerializedName("shop_intro")
+        @SerializedName("shop_intro")
     var resDescription: String? = null,
 
     //减价
-    @SerializedName("discount_list")
+        @SerializedName("discount_list")
     var discountList: List<DiscountModel>? = null
 ) : DataSupport(), Serializable

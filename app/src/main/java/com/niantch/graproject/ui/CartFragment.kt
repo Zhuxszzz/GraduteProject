@@ -14,6 +14,7 @@ import com.niantch.graproject.databinding.CartFragmentBinding
 import com.niantch.graproject.model.GoodsBuyCategoryNum
 import com.niantch.graproject.model.GoodsBuyItemNum
 import com.niantch.graproject.model.UserModel
+import com.niantch.graproject.utils.DataUtil
 import org.litepal.crud.DataSupport
 
 class CartFragment: Fragment(R.layout.cart_fragment) {
@@ -29,11 +30,13 @@ class CartFragment: Fragment(R.layout.cart_fragment) {
     override fun onResume() {
         super.onResume()
         initUI()
-
     }
 
     fun initUI(){
-        if (DataSupport.findAll(UserModel::class.java).size > 0) {
+        binding.bar.ivBack.visibility = View.GONE
+        binding.bar.ivAdd.visibility = View.GONE
+        binding.bar.tvContainerText.text = "购物车"
+        if (DataUtil.getCurrentUser() != null) {
             //本地数据库查询所有ResBuyItemNum数据
             resBuyItemNumList = DataSupport.findAll(GoodsBuyItemNum::class.java) as ArrayList<GoodsBuyItemNum>
             binding.loginBtn.visibility = View.GONE
@@ -70,6 +73,7 @@ class CartFragment: Fragment(R.layout.cart_fragment) {
 
         }
     }
+
     fun doOnClick(btn: ImageView?, position: Int, resId: String?) {
         val builder: AlertDialog.Builder = AlertDialog.Builder(context!!)
         val alertDialog: AlertDialog = builder.create()

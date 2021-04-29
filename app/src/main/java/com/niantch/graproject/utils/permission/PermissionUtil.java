@@ -11,6 +11,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import com.niantch.graproject.R;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -47,7 +48,7 @@ public class PermissionUtil {
      * @param permissions 申请的权限
      * @param listener 监听权限接口
      */
-    public void requestPermissions(String[] permissions, PermissionListener listener) {
+    public void requestPermissions(ArrayList<String> permissions, PermissionListener listener) {
         fragment.setListener(listener);
         fragment.requestPermissions(permissions);
 

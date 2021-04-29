@@ -46,7 +46,17 @@
             android:background="@color/cardview_dark_background"
             android:layout_weight="0.1"
             />
+    <EditText
+            android:id="@+id/et_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="请输入电话号码"/>
 
+    <EditText
+            android:id="@+id/et_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="请输入姓名"/>
     <LinearLayout
             android:id="@+id/ll_location_list_container"
             android:layout_width="match_parent"

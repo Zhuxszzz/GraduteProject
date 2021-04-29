@@ -17,6 +17,7 @@ import com.niantch.graproject.databinding.OrderFagmentBinding
 import com.niantch.graproject.model.OrderModel
 import com.niantch.graproject.model.UserModel
 import com.niantch.graproject.ui.UserFragment.Companion.REQUEST_LOGIN
+import com.niantch.graproject.utils.DataUtil
 import com.niantch.graproject.utils.HttpUtil
 import okhttp3.Call
 import okhttp3.Callback
@@ -50,11 +51,14 @@ class OrderFragment: Fragment() {
     }
 
     fun initUI() {
+        binding.bar.ivBack.visibility = View.GONE
+        binding.bar.ivAdd.visibility = View.GONE
+        binding.bar.tvContainerText.text = "我的订单"
         binding.loginBtn.setOnClickListener(View.OnClickListener {
             val intent = Intent(context, LoginActivity::class.java)
             startActivityForResult(intent, REQUEST_LOGIN)
         })
-        if (DataSupport.findAll(UserModel::class.java).size > 0) {
+        if (DataUtil.getCurrentUser() != null) {
             binding.loginBtn.setVisibility(View.GONE)
             binding.orderFragmentRecycler.setLayoutManager(linearLayoutManager)
             requestListData()
@@ -116,7 +120,7 @@ class OrderFragment: Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if (DataSupport.findAll(UserModel::class.java).size == 0) {
+        if (DataUtil.getCurrentUser() == null) {
             binding.loginBtn.visibility = View.VISIBLE
             binding.orderFragmentRecycler.visibility = View.GONE
             binding.listEmpty.visibility = View.GONE
@@ -149,27 +153,16 @@ class OrderFragment: Fragment() {
                 val jsonString = response.body().string()
                 activity!!.runOnUiThread {
                     binding.firstLoad.visibility = View.GONE
-                    try {
-                        val jsonObject = JSONObject(jsonString)
-                        val status = jsonObject.getInt("status")
-                        if (status != 0) {
-                            orderList.clear()
-                            orderList.addAll(Gson().fromJson<Any>(jsonObject.getJSONArray("data").toString(), object : TypeToken<List<OrderModel?>?>() {}.type) as List<OrderModel>)
-                            if (orderList.size == 0) {
-                                binding.orderFragmentRecycler.visibility = View.GONE
-                                binding.listEmpty.visibility = View.VISIBLE
-                            } else {
-                                adapter?.notifyDataSetChanged()
-                                binding.orderFragmentRecycler.visibility = View.VISIBLE
-                                //置顶binding.orderFragmentRecycler
-                                linearLayoutManager?.scrollToPositionWithOffset(0, 0)
-                            }
-                        } else {
-                            binding.listEmpty.visibility = View.VISIBLE
-                            Toast.makeText(context, jsonObject.getString("msg"), Toast.LENGTH_SHORT).show()
-                        }
-                    } catch (e: JSONException) {
+                    orderList.clear()
+                    orderList.addAll(DataSupport.findAll(OrderModel::class.java))
+                    if (orderList.size == 0) {
+                        binding.orderFragmentRecycler.visibility = View.GONE
                         binding.listEmpty.visibility = View.VISIBLE
+                    } else {
+                        adapter?.notifyDataSetChanged()
+                        binding.orderFragmentRecycler.visibility = View.VISIBLE
+                        //置顶binding.orderFragmentRecycler
+                        linearLayoutManager?.scrollToPositionWithOffset(0, 0)
                     }
                 }
             }

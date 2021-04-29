@@ -5,7 +5,6 @@ import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -19,8 +18,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.niantch.graproject.R
 import com.niantch.graproject.adapter.TabFragmentAdapter
 import com.niantch.graproject.databinding.ActivityResBinding
@@ -29,25 +26,19 @@ import com.niantch.graproject.model.*
 import com.niantch.graproject.model.Constants.RES_DETAIL
 import com.niantch.graproject.utils.DataUtil
 import com.niantch.graproject.utils.FileStorage
-import com.niantch.graproject.utils.HttpUtil
 import com.niantch.graproject.utils.ImageUtil
 import com.niantch.graproject.viewmodel.ResViewModel
-import okhttp3.Call
-import okhttp3.Callback
-import okhttp3.Response
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import org.litepal.crud.DataSupport
-import java.io.IOException
 import java.text.DecimalFormat
-import kotlin.collections.ArrayList
 
 /**
  * author: niantchzhu
  * date: 2021
  */
-class ResActivity : AppCompatActivity(R.layout.activity_res), View.OnClickListener {
+class ResActivity : AppCompatActivity(R.layout.activity_res){
 
     companion object {
         val RES_ID = "res_id"
@@ -55,7 +46,7 @@ class ResActivity : AppCompatActivity(R.layout.activity_res), View.OnClickListen
     }
 
     private lateinit var binding: ActivityResBinding
-    private val resViewModel: ResViewModel by viewModels { defaultViewModelProviderFactory }
+    private val resViewModel: ResViewModel by viewModels()
     private var homeRecShopDetailModel: ShopDetailModel? = null
 
     //优惠总数
@@ -88,95 +79,43 @@ class ResActivity : AppCompatActivity(R.layout.activity_res), View.OnClickListen
         super.onCreate(savedInstanceState)
         binding = ActivityResBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        initData()
+        initView()
+        initObserver()
     }
 
     fun initView() {
-        binding.returnBtn.setOnClickListener(this)
-        binding.myShop.goToAccount.setOnClickListener(this)
-        binding.searchLl.setOnClickListener(this)
-        binding.myShop.popRl.setOnClickListener(this)
-        binding.moreIv.setOnClickListener(this)
+        binding.returnBtn.setOnClickListener { finish() }
+        binding.myShop.goToAccount.setOnClickListener {
+            if (DataUtil.getCurrentUser() != null) {
+                val accountIntent = Intent(this, AccountActivity::class.java)
+                accountIntent.putExtra("res_id", resId)
+                accountIntent.putExtra("res_name", resName)
+                startActivity(accountIntent)
+            } else {
+                val loginIntent = Intent(this, LoginActivity::class.java)
+                startActivity(loginIntent)
+            }
+        }
+        binding.myShop.popRl.setOnClickListener{
+            showSelectedDetailDialog()
+        }
     }
 
     fun initData() {
         goodsListModel = GoodsListModel()
         val intent = intent
-        homeRecShopDetailModel = intent.getSerializableExtra(RES_DETAIL) as ShopDetailModel
+        homeRecShopDetailModel = intent.getSerializableExtra(RES_DETAIL) as ShopDetailModel?
         if (homeRecShopDetailModel == null) {
             resId = intent.getStringExtra(RES_ID).toInt()
             resName = intent.getStringExtra("res_name")
-
-            //请求店铺信息
-            binding.progressBar.visibility = View.VISIBLE
-            resViewModel.fetchShopsGoodsData(resId)
-//            val hashMap = HashMap<String, String?>()
-//            hashMap["shop_id"] = intent.getStringExtra(RES_ID)
-//            HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH + HttpUtil.OBTAIN_SHOP_BY_ID, hashMap, object : Callback {
-//                override fun onFailure(call: Call, e: IOException) {
-//                    Log.d("homeRecResDetail fail", e.toString())
-//                    runOnUiThread {
-//                        Toast.makeText(this@ResActivity, "网络连接超时，请检查网络!", Toast.LENGTH_SHORT).show()
-//                        binding.progressBar.visibility = View.GONE
-//                    }
-//                }
-//
-//                @Throws(IOException::class)
-//                override fun onResponse(call: Call, response: Response) {
-//                    var responseText = response.body().string()
-//                    responseText = HttpUtil.requireData(responseText)
-//                    try {
-//                        val jsonObject = JSONObject(responseText)
-//                        val status = jsonObject.getInt("status")
-//                        if (status == 1) {
-//                            homeRecShopDetailModel = Gson().fromJson(jsonObject.getJSONObject("data").toString(), ShopDetailModel::class.java)
-//                            runOnUiThread {
-//                                setResDetail()
-//                                requestResGoods()
-//                            }
-//                        }
-//                    } catch (e: JSONException) {
-//                    }
-//                }
-//            })
+            homeRecShopDetailModel = DataUtil.getShopWithID(resId)
         } else {
-            setResDetail()
-            resId = homeRecShopDetailModel?.resId ?: 0
+            resId = homeRecShopDetailModel?.shopId ?: 0
             resName = homeRecShopDetailModel?.resName
-            requestResGoods()
         }
-    }
-
-    private fun requestResGoods() {
-        //请求server端的店铺商品列表
         binding.progressBar.visibility = View.VISIBLE
-        val hashMap = HashMap<String, String?>()
-        hashMap["shop_id"] = resId.toString()
-        HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH + HttpUtil.OBTAIN_SHOP_GOODS, hashMap, object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                Log.d("", e.toString())
-                runOnUiThread {
-                    Toast.makeText(this@ResActivity, "网络连接超时，请检查网络!", Toast.LENGTH_SHORT).show()
-                    binding.progressBar.visibility = View.GONE
-                }
-            }
-
-            @Throws(IOException::class)
-            override fun onResponse(call: Call, response: Response) {
-                var responseText = response.body().string()
-                responseText = HttpUtil.requireData(responseText)
-                categoryModelList = Gson().fromJson<List<GoodsNetItem>>(responseText, object : TypeToken<List<GoodsNetItem?>?>() {}.type)
-                runOnUiThread {
-                    try {
-                        goodsListModel = DataUtil.getGoodListModel(categoryModelList as List<GoodsNetItem>)
-                        binding.progressBar.visibility = View.GONE
-                        setViewPager()
-                    } catch (e: Exception) {
-                        Toast.makeText(this@ResActivity, "网络连接超时，请检查网络!", Toast.LENGTH_SHORT).show()
-                        binding.progressBar.visibility = View.GONE
-                    }
-                }
-            }
-        })
+        resViewModel.fetchShopsGoodsData(resId)
     }
 
     private fun setViewPager() {
@@ -192,31 +131,6 @@ class ResActivity : AppCompatActivity(R.layout.activity_res), View.OnClickListen
 
     }
 
-    override fun onClick(v: View) {
-        when (v.id) {
-            R.id.return_btn -> finish()
-            R.id.search_ll -> {
-                //应该启动店铺内搜索界面，只搜索该店铺内的商品;而不是启动SearchActivity去搜索店铺
-//                Intent intent = new Intent(this,SearchActivity.class);
-//                startActivity(intent);
-//                val intent = Intent(this, OtherProcessActivity::class.java)
-//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-//                startActivity(intent)
-            }
-            R.id.pop_rl -> showSelectedDetailDialog()
-            R.id.more_iv -> {
-            }
-            R.id.go_to_account -> if (DataSupport.findAll(UserModel::class.java).size > 0) {
-                val accountIntent = Intent(this, AccountActivity::class.java)
-                accountIntent.putExtra("res_id", resId)
-                accountIntent.putExtra("res_name", resName)
-                startActivity(accountIntent)
-            } else {
-                val loginIntent = Intent(this, LoginActivity::class.java)
-                startActivity(loginIntent)
-            }
-        }
-    }
 
     /**
      * 添加 或者  删除  商品发送的消息处理
@@ -265,8 +179,6 @@ class ResActivity : AppCompatActivity(R.layout.activity_res), View.OnClickListen
                 deliverMoney = java.lang.String.format(deliverMoney, homeRecShopDetailModel!!.resDeliverMoney)
                 binding.myShop.howMoneyToDelivery.text = deliverMoney
             }
-
-//            Log.d("ResActivity","添加的数量："+event.goods.size());
         }
     }
 
@@ -356,9 +268,6 @@ class ResActivity : AppCompatActivity(R.layout.activity_res), View.OnClickListen
     override fun onStart() {
         super.onStart()
         EventBus.getDefault().register(this)
-        initView()
-        initData()
-        initObserver()
     }
 
     override fun onStop() {
@@ -368,7 +277,7 @@ class ResActivity : AppCompatActivity(R.layout.activity_res), View.OnClickListen
 
     private fun showSelectedDetailDialog() {
         val list: List<GoodsBuyItemNum> = DataSupport.where("resId = ?", resId.toString()).find(GoodsBuyItemNum::class.java)
-        if (list.size > 0) {
+        if (list.isNotEmpty()) {
             var packageMoney = 0.0
             val dialog = Dialog(this, R.style.ActionSheetDialogStyle)
             //填充对话框的布局
@@ -527,6 +436,7 @@ class ResActivity : AppCompatActivity(R.layout.activity_res), View.OnClickListen
                     Toast.makeText(this@ResActivity, "网络连接超时，请检查网络!", Toast.LENGTH_SHORT).show()
                     binding.progressBar.visibility = View.GONE
                 }
+                setResDetail()
             }
         })
     }

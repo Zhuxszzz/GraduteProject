@@ -41,7 +41,7 @@ public class PermissionFragment extends Fragment {
      * @param permissions 需要申请的权限
      */
 //    @TargetApi(Build.VERSION_CODES.M)
-    public void requestPermissions(@NonNull String[] permissions) {
+    public void requestPermissions(@NonNull ArrayList<String> permissions) {
         List<String> requestPermissionList = new ArrayList<>();
         //找出所有未授权的权限
         for (String permission : permissions) {

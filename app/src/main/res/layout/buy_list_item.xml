@@ -11,6 +11,7 @@
         <TextView
             android:id="@+id/account_item_name"
             android:text="酱爆鸡丁盖饭"
+                android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -19,6 +20,7 @@
             android:layout_marginRight="@dimen/space_30px"
             android:layout_alignParentRight="true"
             android:text="￥60"
+                android:textColor="@color/black_60"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -26,6 +28,7 @@
             android:id="@+id/account_item_num"
             android:layout_marginRight="@dimen/space_35px"
             android:text="×3"
+                android:textColor="@color/black"
             android:layout_toLeftOf="@+id/account_item_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

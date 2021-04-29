@@ -4,6 +4,7 @@ import android.preference.PreferenceManager
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.niantch.graproject.model.UserModel
+import com.niantch.graproject.utils.DataUtil
 import com.niantch.graproject.utils.GlobalContextUtil
 import org.litepal.crud.DataSupport
 
@@ -31,6 +32,14 @@ class UserViewModel: ViewModel() {
         val editor = PreferenceManager.getDefaultSharedPreferences(GlobalContextUtil.globalContext!!).edit()
         editor.putInt("user_id", -1)
         editor.apply()
+    }
+
+    fun login(userPhone: String, password: String) {
+        val user = DataUtil.getUserWithPhone(userPhone,password)
+        user?.let {
+            it.setToDefault("")
+        }
+        userLiveData.postValue(user)
     }
 
 }

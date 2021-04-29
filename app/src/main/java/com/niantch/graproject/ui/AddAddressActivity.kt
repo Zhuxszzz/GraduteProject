@@ -1,19 +1,23 @@
 package com.niantch.graproject.ui
 
 import android.Manifest
+import android.app.Activity
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
 import android.os.Looper
+import android.preference.PreferenceManager
 import android.util.Log
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.niantch.graproject.R
-import com.niantch.graproject.adapter.AddressAdapter
+import com.niantch.graproject.adapter.AddAddressAdapter
 import com.niantch.graproject.databinding.ActivityAddAddressBinding
+import com.niantch.graproject.model.AddressModel
+import com.niantch.graproject.utils.DataUtil
 import com.tbruyelle.rxpermissions2.Permission
 import com.tbruyelle.rxpermissions2.RxPermissions
 import com.tencent.lbssearch.TencentSearch
@@ -49,8 +53,7 @@ class AddAddressActivity : AppCompatActivity(R.layout.activity_add_address), Loc
     private var locationManager: TencentLocationManager? = null
     private var locationRequest: TencentLocationRequest? = null
     private var locationChangedListener: LocationSource.OnLocationChangedListener? = null
-    private var adapter: AddressAdapter? = null
-//    private val mapFragment = MapFragment()
+    private var adapterAdd: AddAddressAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,9 +95,22 @@ class AddAddressActivity : AppCompatActivity(R.layout.activity_add_address), Loc
     }
 
     fun initUI() {
-        adapter = AddressAdapter()
+        adapterAdd = AddAddressAdapter()
         binding.ivUserFragmentBack.setOnClickListener { finish() }
-        binding.rvLocationList.adapter = adapter
+        binding.txAddressConfirm.setOnClickListener {
+            val intent = Intent()
+            val addressModel = AddressModel().apply {
+                user_id = DataUtil.getCurrentUser()!!.userId
+                name = binding.etName.text.toString()
+                phone = binding.etPhone.text.toString()
+                address = adapterAdd?.getAddress()
+            }
+            addressModel.save()
+            intent.putExtra("new_address", addressModel)
+            setResult(Activity.RESULT_OK, intent)
+            finish()
+        }
+        binding.rvLocationList.adapter = adapterAdd
         binding.rvLocationList.layoutManager = LinearLayoutManager(applicationContext)
     }
 
@@ -145,7 +161,7 @@ class AddAddressActivity : AppCompatActivity(R.layout.activity_add_address), Loc
                     poiList.add(poi.title)
                 }
                 Log.e(TAG, sb.toString())
-                adapter?.refreshDataSet(poiList)
+                adapterAdd?.refreshDataSet(poiList)
             }
         })
     }
@@ -216,6 +232,7 @@ class AddAddressActivity : AppCompatActivity(R.layout.activity_add_address), Loc
             }
         }
     }
+
 
     companion object {
         const val TAG = "AddAddressActivity"

@@ -24,7 +24,7 @@ object HttpUtil {
     init {
         val serverHost = PreferenceManager.getDefaultSharedPreferences(GlobalContextUtil.globalContext!!).getString(SERVER_HOST, "")
         if (!TextUtils.isEmpty(serverHost)) {
-            HOME_PATH = serverHost + "/restaurant/index.php"
+            HOME_PATH = "$serverHost/restaurant/index.php"
         }
     }
 
