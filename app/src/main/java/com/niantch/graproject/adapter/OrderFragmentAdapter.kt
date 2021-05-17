@@ -11,6 +11,7 @@ import com.niantch.graproject.databinding.OrderFragmentItemBinding
 import com.niantch.graproject.model.Constants
 import com.niantch.graproject.model.OrderModel
 import com.niantch.graproject.ui.ResActivity
+import com.niantch.graproject.ui.ResActivity.Companion.RES_ID
 import com.niantch.graproject.utils.ImageUtil
 import java.lang.String
 
@@ -40,12 +41,12 @@ class OrderFragmentAdapter(val context: Context, val orderList: List<OrderModel>
         holder.binding.tvAddress.text = orderList[position].orderAddress ?: ""
         holder.binding.orderFragmentItemResImg.setOnClickListener {
             val intent = Intent(context, ResActivity::class.java)
-            intent.putExtra(Constants.RES_DETAIL, orderList[position].resId)
+            intent.putExtra(RES_ID, orderList[position].resId)
             context.startActivity(intent)
         }
         holder.binding.orderFragmentItemResName.setOnClickListener {
             val intent = Intent(context, ResActivity::class.java)
-            intent.putExtra(Constants.RES_DETAIL, orderList[position].resId)
+            intent.putExtra(ResActivity.RES_ID, orderList[position].resId)
             context.startActivity(intent)
         }
         when (orderList[position].orderState) {

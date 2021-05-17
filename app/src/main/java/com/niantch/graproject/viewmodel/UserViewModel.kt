@@ -36,9 +36,7 @@ class UserViewModel: ViewModel() {
 
     fun login(userPhone: String, password: String) {
         val user = DataUtil.getUserWithPhone(userPhone,password)
-        user?.let {
-            it.setToDefault("")
-        }
+        user?.setToDefault("")
         userLiveData.postValue(user)
     }
 

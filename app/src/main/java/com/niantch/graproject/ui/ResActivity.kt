@@ -107,7 +107,7 @@ class ResActivity : AppCompatActivity(R.layout.activity_res){
         val intent = intent
         homeRecShopDetailModel = intent.getSerializableExtra(RES_DETAIL) as ShopDetailModel?
         if (homeRecShopDetailModel == null) {
-            resId = intent.getStringExtra(RES_ID).toInt()
+            resId = intent.getIntExtra(RES_ID, 1)
             resName = intent.getStringExtra("res_name")
             homeRecShopDetailModel = DataUtil.getShopWithID(resId)
         } else {
