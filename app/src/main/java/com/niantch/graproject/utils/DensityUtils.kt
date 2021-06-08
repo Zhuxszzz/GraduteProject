@@ -7,10 +7,6 @@ import android.util.TypedValue
 /**
  * Description: 像素转换工具
  * Date         2019-10-21
- * Author       erenhuang
- *
- *
- * Copyright (c) 1998-2019 Tencent Technology (Shenzhen) Company Ltd.
  */
 object DensityUtils {
     /**
